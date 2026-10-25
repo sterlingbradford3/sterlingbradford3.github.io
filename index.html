@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Sorting Ceremony</title>
+<meta name="description" content="Step into the candlelit hall. Answer honestly. The Hat will decide.">
+<meta property="og:title" content="The Sorting Ceremony">
+<meta property="og:description" content="Fourteen questions. One ancient Hat. Which house will claim you?">
+<meta name="theme-color" content="#0b0a12">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕯️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;800&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#d9b46a;--gold2:#f5dfa3;--ink:#efe3c8;--bg:#0b0a12;--acc:#d9b46a;--acc2:#7a5a1e}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:'IM Fell English',Georgia,serif;overflow:hidden}
+#sky{position:fixed;inset:0;z-index:0}
+.vign{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 50% 30%,transparent 0,rgba(0,0,0,.35) 55%,rgba(0,0,0,.85) 100%)}
+.hall{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5}
+main{position:relative;z-index:2;height:100%;display:flex;flex-direction:column}
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:calc(56px + env(safe-area-inset-top)) 20px calc(60px + env(safe-area-inset-bottom));opacity:0;pointer-events:none;transform:translateY(24px) scale(.98);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1);overflow-y:auto}
+.scene>*{flex-shrink:0}.scene>:first-child{margin-top:auto}.scene>:last-child{margin-bottom:auto}
+.scene.on{opacity:1;pointer-events:auto;transform:none}
+h1{font-family:'Cinzel Decorative',serif;font-weight:700;font-size:clamp(34px,9vw,68px);line-height:1.05;margin:0 0 6px;text-align:center;background:linear-gradient(180deg,#fff4cf,#d9b46a 55%,#8a6420);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 18px rgba(217,180,106,.35));letter-spacing:.02em}
+.sub{font-style:italic;font-size:clamp(17px,4.4vw,22px);text-align:center;max-width:520px;opacity:.88;margin:6px 0 26px}
+.orn{width:220px;height:22px;margin:4px auto 10px;display:block}
+.btn{font-family:'Cinzel',serif;font-weight:600;letter-spacing:.18em;text-transform:uppercase;font-size:15px;color:#1b1206;background:linear-gradient(180deg,#f8e2a6,#d4a94f 60%,#a77b2b);border:1px solid #fff0c2;border-radius:999px;padding:16px 34px;cursor:pointer;box-shadow:0 0 0 1px rgba(0,0,0,.4),0 10px 30px rgba(217,180,106,.25),inset 0 1px 0 rgba(255,255,255,.6);transition:transform .2s,box-shadow .3s,opacity .3s;position:relative;overflow:hidden}
+.btn:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(0,0,0,.4),0 14px 40px rgba(217,180,106,.45)}
+.btn:active{transform:scale(.97)}
+.btn[disabled]{opacity:.35;pointer-events:none}
+.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-120%);animation:sheen 3.5s infinite}
+@keyframes sheen{60%,100%{transform:translateX(120%)}}
+.ghost{background:none;color:var(--gold);border:1px solid rgba(217,180,106,.5);box-shadow:none}
+.ghost::after{display:none}
+.parch{width:min(560px,100%);background:linear-gradient(160deg,rgba(40,30,18,.82),rgba(18,14,10,.88));border:1px solid rgba(217,180,106,.35);border-radius:18px;padding:26px 22px;box-shadow:0 30px 80px rgba(0,0,0,.6),inset 0 0 60px rgba(217,180,106,.06);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);position:relative}
+.parch::before,.parch::after{content:"";position:absolute;width:26px;height:26px;border:2px solid var(--gold);opacity:.6}
+.parch::before{top:8px;left:8px;border-right:0;border-bottom:0;border-radius:6px 0 0 0}
+.parch::after{bottom:8px;right:8px;border-left:0;border-top:0;border-radius:0 0 6px 0}
+label.lbl{font-family:'Cinzel',serif;letter-spacing:.2em;font-size:12px;text-transform:uppercase;color:var(--gold);display:block;text-align:center;margin-bottom:12px}
+input.name{width:100%;font-family:'IM Fell English',serif;font-size:28px;text-align:center;color:var(--gold2);background:transparent;border:0;border-bottom:1px solid rgba(217,180,106,.5);padding:10px;outline:none;caret-color:var(--gold)}
+input.name::placeholder{color:rgba(239,227,200,.3);font-style:italic}
+.qnum{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;text-align:center;opacity:.85}
+.qtext{font-size:clamp(21px,5.4vw,28px);line-height:1.25;text-align:center;margin:10px 0 20px}
+.opts{display:grid;gap:10px}
+.opt{font-family:'IM Fell English',serif;font-size:18px;text-align:left;color:var(--ink);background:rgba(255,240,200,.04);border:1px solid rgba(217,180,106,.25);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .25s;display:flex;gap:12px;align-items:center;opacity:0;transform:translateY(10px);animation:rise .5s forwards}
+.opt:hover{background:rgba(217,180,106,.1);border-color:rgba(217,180,106,.6)}
+.opt.sel{background:linear-gradient(90deg,rgba(217,180,106,.28),rgba(217,180,106,.08));border-color:var(--gold2);box-shadow:0 0 22px rgba(217,180,106,.25)}
+.opt .glyph{flex:0 0 auto;width:30px;height:30px;border-radius:50%;border:1px solid rgba(217,180,106,.5);display:grid;place-items:center;font-family:'Cinzel',serif;font-size:13px;color:var(--gold)}
+@keyframes rise{to{opacity:1;transform:none}}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{aspect-ratio:1/1;border-radius:14px;border:1px solid rgba(217,180,106,.3);background:radial-gradient(circle at 50% 35%,rgba(217,180,106,.16),rgba(0,0,0,.2) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:all .35s;padding:10px;opacity:0;transform:rotateY(70deg);animation:flip .7s forwards;perspective:600px}
+.card svg{width:50%;height:auto;filter:drop-shadow(0 0 10px rgba(217,180,106,.4))}
+.card span{font-family:'Cinzel',serif;font-size:13px;letter-spacing:.08em;text-align:center;color:var(--gold2)}
+.card:hover{transform:translateY(-4px)}
+.card.sel{border-color:var(--gold2);box-shadow:0 0 30px rgba(217,180,106,.4);background:radial-gradient(circle at 50% 35%,rgba(217,180,106,.35),rgba(0,0,0,.2) 70%)}
+@keyframes flip{to{opacity:1;transform:none}}
+.slider{margin:22px 4px 8px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:6px;background:linear-gradient(90deg,#3a2c14,var(--gold),#3a2c14);outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff6d8,#d9b46a 50%,#7a5a1e);box-shadow:0 0 20px rgba(217,180,106,.7);cursor:grab;border:0}
+input[type=range]::-moz-range-thumb{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff6d8,#d9b46a 50%,#7a5a1e);border:0}
+.ends{display:flex;justify-content:space-between;font-style:italic;font-size:15px;opacity:.8;margin-top:12px;gap:20px}
+.ends span:last-child{text-align:right}
+.sval{text-align:center;font-family:'Cinzel',serif;color:var(--gold2);font-size:15px;letter-spacing:.1em;min-height:22px}
+.rank .opt .glyph{background:rgba(0,0,0,.3)}
+.rank .opt.sel .glyph{background:var(--gold);color:#1b1206;font-weight:800}
+.hint{text-align:center;font-style:italic;font-size:14px;opacity:.65;margin-top:12px}
+.timer{height:4px;background:rgba(217,180,106,.15);border-radius:4px;overflow:hidden;margin:-6px 0 18px}
+.timer i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#ff7a3a,var(--gold2));transform-origin:left;box-shadow:0 0 10px #ffb05a}
+.timed .opts{grid-template-columns:1fr 1fr}
+.timed .opt{justify-content:center;text-align:center;min-height:70px;font-size:20px}
+.navrow{display:flex;justify-content:center;margin-top:20px;min-height:54px}
+/* progress candle */
+.prog{position:fixed;left:0;right:0;top:calc(10px + env(safe-area-inset-top));z-index:5;display:flex;justify-content:center;opacity:0;transition:opacity .6s;pointer-events:none}
+.prog.on{opacity:1}
+.ribbon{width:min(520px,86vw);height:6px;border-radius:6px;background:rgba(217,180,106,.15);position:relative;margin-top:14px}
+.ribbon b{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:linear-gradient(90deg,#8a6420,var(--gold2));transition:width .8s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 12px rgba(245,223,163,.6)}
+.ribbon .flame{position:absolute;top:-17px;width:12px;height:18px;margin-left:-6px;transition:left .8s cubic-bezier(.2,.8,.2,1);border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:radial-gradient(circle at 50% 70%,#fff,#ffd27a 40%,#ff8a2a 75%,transparent 80%);animation:flick .15s infinite alternate;filter:blur(.3px) drop-shadow(0 0 8px #ffb347)}
+@keyframes flick{to{transform:scale(1.08,.94) translateY(1px)}}
+/* hat */
+.hatwrap{width:min(300px,70vw);position:relative}
+.hatwrap svg{width:100%;height:auto;overflow:visible}
+.hat{transform-origin:50% 90%;animation:sway 4s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+.mouth{transform-origin:50% 50%;transform-box:fill-box}
+.talking .mouth{animation:talk .18s infinite alternate}
+@keyframes talk{to{transform:scaleY(2.2)}}
+.speech{min-height:120px;width:min(560px,100%);text-align:center;font-size:clamp(20px,5.2vw,26px);font-style:italic;line-height:1.35;margin-top:14px;color:var(--gold2);text-shadow:0 0 18px rgba(217,180,106,.35)}
+.speech .cur{display:inline-block;width:2px;height:1em;background:var(--gold2);vertical-align:-3px;animation:blink 1s infinite;margin-left:2px}
+@keyframes blink{50%{opacity:0}}
+/* reveal */
+#reveal .crest{width:min(200px,50vw);aspect-ratio:200/240;height:auto;filter:drop-shadow(0 0 40px var(--acc));transform:scale(.2) rotate(-25deg);opacity:0}
+#reveal.on .crest{animation:crest 1.4s .2s cubic-bezier(.2,1.4,.3,1) forwards}
+@keyframes crest{to{transform:none;opacity:1}}
+.hname{font-family:'Cinzel Decorative',serif;font-weight:700;font-size:clamp(38px,11vw,92px);margin:8px 0 0;letter-spacing:.04em;color:var(--acc);text-shadow:0 0 30px var(--acc),0 0 2px #fff;opacity:0;transform:translateY(20px);text-align:center}
+#reveal.on .hname{animation:rise 1s 1.1s forwards}
+.fade{opacity:0}
+#reveal.on .fade{animation:rise 1s forwards}
+.traits{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px 0}
+.traits span{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:7px 12px;border-radius:999px;border:1px solid var(--acc);color:var(--ink);background:color-mix(in srgb,var(--acc) 18%,transparent)}
+.desc{font-size:18px;line-height:1.5;text-align:center;max-width:500px}
+.row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:20px}
+.flash{position:fixed;inset:0;z-index:20;background:radial-gradient(circle,#fff,var(--acc) 40%,transparent 75%);opacity:0;pointer-events:none}
+.flash.go{animation:fl 1.6s ease-out}
+@keyframes fl{0%{opacity:0}12%{opacity:1}100%{opacity:0}}
+#fx{position:fixed;inset:0;z-index:15;pointer-events:none}
+.snd{position:fixed;right:14px;top:calc(12px + env(safe-area-inset-top));z-index:30;width:42px;height:42px;border-radius:50%;border:1px solid rgba(217,180,106,.45);background:rgba(10,8,14,.6);color:var(--gold);display:grid;place-items:center;cursor:pointer;backdrop-filter:blur(4px)}
+.snd svg{width:20px;height:20px}
+footer{position:fixed;bottom:0;padding-bottom:calc(8px + env(safe-area-inset-bottom))!important;padding-top:18px!important;background:linear-gradient(transparent,rgba(8,7,12,.92) 55%);left:0;right:0;text-align:center;font-size:11px;letter-spacing:.06em;color:rgba(239,227,200,.5);z-index:3;font-family:'Cinzel',serif;pointer-events:none;padding:0 10px}
+.toast{position:fixed;left:50%;bottom:60px;transform:translate(-50%,20px);background:#1b1408;border:1px solid var(--gold);padding:10px 18px;border-radius:999px;font-family:'Cinzel',serif;font-size:13px;opacity:0;transition:all .4s;z-index:40}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.shake{animation:shk .4s}
+@keyframes shk{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+<canvas id="sky"></canvas>
+<svg class="hall" viewBox="0 0 400 800" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+<defs><linearGradient id="hw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1526" stop-opacity="0"/><stop offset="1" stop-color="#1a1526"/></linearGradient></defs>
+<g fill="url(#hw)" stroke="rgba(217,180,106,.08)">
+<path d="M0 800V300Q40 180 80 300V800z"/><path d="M320 800V300Q360 180 400 300V800z"/>
+<path d="M95 800V360Q130 250 165 360V800z" opacity=".6"/><path d="M235 800V360Q270 250 305 360V800z" opacity=".6"/>
+</g></svg>
+<div class="vign"></div>
+<canvas id="fx"></canvas>
+<div class="flash" id="flash"></div>
+<button class="snd" id="snd" aria-label="Toggle sound"></button>
+<div class="prog" id="prog"><div class="ribbon"><b id="pb"></b><i class="flame" id="pf"></i></div></div>
+
+<main>
+<section class="scene on" id="intro">
+  <svg class="orn" viewBox="0 0 220 22"><path d="M0 11h85M135 11h85" stroke="#d9b46a" stroke-width="1"/><path d="M110 2l9 9-9 9-9-9z" fill="none" stroke="#d9b46a"/><circle cx="110" cy="11" r="2.5" fill="#f5dfa3"/><circle cx="92" cy="11" r="1.5" fill="#d9b46a"/><circle cx="128" cy="11" r="1.5" fill="#d9b46a"/></svg>
+  <h1>The Sorting<br>Ceremony</h1>
+  <svg class="orn" viewBox="0 0 220 22"><path d="M0 11h85M135 11h85" stroke="#d9b46a" stroke-width="1"/><path d="M110 2l9 9-9 9-9-9z" fill="none" stroke="#d9b46a"/></svg>
+  <p class="sub">The candles are lit. The hall falls silent. An ancient Hat waits to look into the corners of your mind.</p>
+  <button class="btn" id="begin">Enter the Hall</button>
+</section>
+
+<section class="scene" id="nameS">
+  <div class="parch">
+    <label class="lbl" for="nm">Step forward, first-year</label>
+    <p class="qtext" style="margin-top:0">By what name shall the Hat know you?</p>
+    <input class="name" id="nm" autocomplete="given-name" maxlength="24" placeholder="Your first name" enterkeyhint="go">
+    <div class="navrow"><button class="btn" id="nameGo" disabled>Take a Seat</button></div>
+  </div>
+</section>
+
+<section class="scene" id="quiz"><div class="parch" id="qbox"></div></section>
+
+<section class="scene" id="hatS">
+  <div class="hatwrap" id="hatwrap">
+  <svg viewBox="0 0 300 260"><defs>
+   <linearGradient id="hg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5a4128"/><stop offset=".6" stop-color="#3a2817"/><stop offset="1" stop-color="#20160c"/></linearGradient>
+   <radialGradient id="hl" cx=".5" cy="1" r=".8"><stop offset="0" stop-color="#d9b46a" stop-opacity=".35"/><stop offset="1" stop-color="#d9b46a" stop-opacity="0"/></radialGradient></defs>
+   <ellipse cx="150" cy="240" rx="140" ry="18" fill="url(#hl)"/>
+   <g class="hat">
+    <path d="M20 225Q150 255 280 225Q270 205 230 200Q150 215 70 200Q30 205 20 225z" fill="url(#hg)" stroke="#1a1209" stroke-width="2"/>
+    <path d="M75 205Q90 150 110 120Q125 80 150 60Q170 40 195 30Q215 26 222 40Q205 38 192 52Q180 70 178 100Q182 150 228 203Q150 222 75 205z" fill="url(#hg)" stroke="#1a1209" stroke-width="2"/>
+    <path d="M222 40Q238 52 230 70Q225 58 214 55z" fill="#3a2817" stroke="#1a1209" stroke-width="2"/>
+    <path d="M100 160Q120 150 140 162M118 120Q135 112 160 120M150 80Q165 74 178 82" stroke="#1a1209" stroke-width="3" fill="none" opacity=".7"/>
+    <path d="M105 150Q122 140 140 148" stroke="#0c0804" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M152 146Q170 136 186 146" stroke="#0c0804" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <ellipse class="mouth" cx="148" cy="182" rx="26" ry="4" fill="#0c0804"/>
+   </g></svg>
+  </div>
+  <div class="speech" id="speech"></div>
+</section>
+
+<section class="scene" id="reveal">
+  <svg class="crest" id="crest" viewBox="0 0 200 240"></svg>
+  <div class="hname" id="hname"></div>
+  <p class="sub fade" id="hmotto" style="margin:4px 0 0;animation-delay:1.5s"></p>
+  <div class="traits fade" id="htraits" style="animation-delay:1.8s"></div>
+  <p class="desc fade" id="hdesc" style="animation-delay:2.1s"></p>
+  <div class="row fade" style="animation-delay:2.5s">
+    <button class="btn" id="share">Share the Ceremony</button>
+    <button class="btn ghost" id="again">Sort Another</button>
+  </div>
+</section>
+</main>
+<div class="toast" id="toast"></div>
+<footer>A fan-made tribute for fun · Not affiliated with or endorsed by any author, studio, or rights holder</footer>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s), W=window;
+/* ---------- candles + embers ---------- */
+const sky=$('#sky'),sx=sky.getContext('2d');let SW,SH,DPR=Math.min(2,W.devicePixelRatio||1),cand=[],stars=[];
+function rs(){SW=innerWidth;SH=innerHeight;for(const c of [sky,$('#fx')]){c.width=SW*DPR;c.height=SH*DPR;c.style.width=SW+'px';c.style.height=SH+'px'}
+ sx.setTransform(DPR,0,0,DPR,0,0);fx.setTransform(DPR,0,0,DPR,0,0);
+ const n=Math.round(Math.min(46,SW*SH/14000));cand=[...Array(n)].map(()=>({x:Math.random()*SW,y:Math.random()*SH*.85,z:.35+Math.random()*.9,p:Math.random()*6.28,s:.3+Math.random()*.6}));
+ stars=[...Array(120)].map(()=>({x:Math.random()*SW,y:Math.random()*SH*.6,r:Math.random()*1.2,p:Math.random()*6.28}))}
+const fx=$('#fx').getContext('2d');
+let t0=0;function drawSky(t){t0=t/1000;const g=sx.createLinearGradient(0,0,0,SH);g.addColorStop(0,'#090814');g.addColorStop(.6,'#120d1c');g.addColorStop(1,'#1c130c');sx.fillStyle=g;sx.fillRect(0,0,SW,SH);
+ for(const s of stars){sx.globalAlpha=.25+.35*Math.sin(t0*1.3+s.p);sx.fillStyle='#fff8e0';sx.beginPath();sx.arc(s.x,s.y,s.r,0,6.28);sx.fill()}
+ sx.globalAlpha=1;
+ for(const c of cand){const y=c.y+Math.sin(t0*c.s+c.p)*10*c.z,x=c.x+Math.cos(t0*c.s*.7+c.p)*4,h=26*c.z,w=6*c.z;
+  const gl=sx.createRadialGradient(x,y-h/2-6*c.z,0,x,y-h/2-6*c.z,40*c.z);gl.addColorStop(0,'rgba(255,200,110,.35)');gl.addColorStop(1,'rgba(255,200,110,0)');sx.fillStyle=gl;sx.fillRect(x-40*c.z,y-h-46*c.z,80*c.z,80*c.z);
+  const cg=sx.createLinearGradient(x-w/2,0,x+w/2,0);cg.addColorStop(0,'#b9a47a');cg.addColorStop(.5,'#fff3d6');cg.addColorStop(1,'#a8926a');sx.fillStyle=cg;sx.fillRect(x-w/2,y-h/2,w,h);
+  const f=1+Math.sin(t0*18+c.p)*.12;sx.fillStyle='#ffcf6e';sx.beginPath();sx.ellipse(x,y-h/2-5*c.z,2.4*c.z,6*c.z*f,0,0,6.28);sx.fill();sx.fillStyle='#fffbe8';sx.beginPath();sx.ellipse(x,y-h/2-4*c.z,1*c.z,3*c.z,0,0,6.28);sx.fill()}
+ }
+/* particles for fx layer */
+let parts=[];function burst(cols,n=160,ox=SW/2,oy=SH*.36){for(let i=0;i<n;i++){const a=Math.random()*6.28,v=3+Math.random()*9;parts.push({x:ox,y:oy,vx:Math.cos(a)*v,vy:Math.sin(a)*v-3,l:1,d:.006+Math.random()*.012,c:cols[i%cols.length],s:2+Math.random()*4,r:Math.random()*6.28,sp:Math.random()<.5})}}
+let rain=null;function drawFx(){fx.clearRect(0,0,SW,SH);if(rain&&Math.random()<.5)parts.push({x:Math.random()*SW,y:-10,vx:(Math.random()-.5)*1,vy:1+Math.random()*2,l:1,d:.003,c:rain[Math.floor(Math.random()*rain.length)],s:2+Math.random()*3,r:Math.random()*6.28,sp:Math.random()<.4});
+ parts=parts.filter(p=>p.l>0&&p.y<SH+20);for(const p of parts){p.x+=p.vx;p.y+=p.vy;p.vx*=.985;p.vy=p.vy*.985+.08;p.l-=p.d;p.r+=.1;fx.globalAlpha=Math.max(0,p.l);fx.fillStyle=p.c;
+ if(p.sp){fx.shadowBlur=10;fx.shadowColor=p.c;fx.beginPath();fx.arc(p.x,p.y,p.s*.6,0,6.28);fx.fill();fx.shadowBlur=0}else{fx.save();fx.translate(p.x,p.y);fx.rotate(p.r);fx.fillRect(-p.s,-p.s/3,p.s*2,p.s/1.5);fx.restore()}}fx.globalAlpha=1}
+function loop(t){drawSky(t);drawFx();requestAnimationFrame(loop)}
+addEventListener('resize',rs);rs();requestAnimationFrame(loop);
+
+/* ---------- audio (Web Audio, generated) ---------- */
+let AC=null,master=null,on=false;const sndB=$('#snd');
+const icOff='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M23 9l-6 6M17 9l6 6"/></svg>',icOn='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 010 7M19 5a10 10 0 010 14"/></svg>';
+sndB.innerHTML=icOff;
+function initAudio(){AC=new (W.AudioContext||W.webkitAudioContext)();master=AC.createGain();master.gain.value=0;master.connect(AC.destination);
+ const rev=AC.createConvolver(),len=AC.sampleRate*3,b=AC.createBuffer(2,len,AC.sampleRate);for(let ch=0;ch<2;ch++){const d=b.getChannelData(ch);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.5)}rev.buffer=b;rev.connect(master);W._rev=rev;
+ const pad=AC.createGain();pad.gain.value=.05;const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=700;pad.connect(lp);lp.connect(master);lp.connect(rev);
+ [110,164.8,220,277.2,329.6].forEach((f,i)=>{const o=AC.createOscillator();o.type=i%2?'triangle':'sine';o.frequency.value=f;o.detune.value=(Math.random()-.5)*12;const g=AC.createGain();g.gain.value=.4;const l=AC.createOscillator();l.frequency.value=.05+i*.03;const lg=AC.createGain();lg.gain.value=.3;l.connect(lg);lg.connect(g.gain);l.start();o.connect(g);g.connect(pad);o.start()});
+ const nb=AC.createBuffer(1,AC.sampleRate*2,AC.sampleRate),nd=nb.getChannelData(0);for(let i=0;i<nd.length;i++)nd[i]=Math.random()*2-1;const ns=AC.createBufferSource();ns.buffer=nb;ns.loop=true;const bp=AC.createBiquadFilter();bp.type='bandpass';bp.frequency.value=400;bp.Q.value=.6;const ng=AC.createGain();ng.gain.value=.012;ns.connect(bp);bp.connect(ng);ng.connect(master);ns.start()}
+function chime(freqs=[880,1318.5,1760],dur=2.5,gain=.08){if(!AC||!on)return;const t=AC.currentTime;freqs.forEach((f,i)=>{const o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,t+i*.08);g.gain.linearRampToValueAtTime(gain,t+i*.08+.01);g.gain.exponentialRampToValueAtTime(.0001,t+i*.08+dur);o.connect(g);g.connect(master);g.connect(W._rev);o.start(t+i*.08);o.stop(t+i*.08+dur)})}
+function tick(){chime([1200+Math.random()*400],.15,.025)}
+function fanfare(){if(!AC||!on)return;[[392,0],[523.3,.18],[659.3,.36],[784,.54],[1046.5,.9]].forEach(([f,d])=>{const t=AC.currentTime+d;['sawtooth','triangle'].forEach(ty=>{const o=AC.createOscillator(),g=AC.createGain(),lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=2200;o.type=ty;o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.05,t+.04);g.gain.exponentialRampToValueAtTime(.0001,t+(d>.8?2.4:.6));o.connect(lp);lp.connect(g);g.connect(master);g.connect(W._rev);o.start(t);o.stop(t+2.5)})})}
+function rumble(){if(!AC||!on)return;const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.setValueAtTime(60,t);o.frequency.exponentialRampToValueAtTime(35,t+3);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.18,t+1.5);g.gain.linearRampToValueAtTime(0,t+3.2);o.connect(g);g.connect(master);o.start(t);o.stop(t+3.3)}
+sndB.onclick=()=>{if(!AC)initAudio();AC.resume();on=!on;master.gain.cancelScheduledValues(AC.currentTime);master.gain.linearRampToValueAtTime(on?.9:0,AC.currentTime+.8);sndB.innerHTML=on?icOn:icOff;if(on)chime()};
+
+/* ---------- helpers ---------- */
+function show(id){document.querySelectorAll('.scene').forEach(s=>s.classList.toggle('on',s.id===id))}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2200)}
+const vib=n=>{try{navigator.vibrate&&navigator.vibrate(n)}catch(e){}};
+
+/* ---------- houses ---------- */
+// order: 0 lion, 1 badger, 2 eagle, 3 serpent
+const H=[
+ {n:'Gryffindor',c:'#e0453a',c2:'#f1b941',cols:['#c0262d','#f1b941','#ffdd77','#ff6a3d'],motto:'Where dwell the brave at heart',t:['Courage','Daring','Nerve','Chivalry'],d:'You run toward the noise, not away from it. Loyal to your friends, fierce for what is right, and just a little bit reckless, you will make every common room louder and every adventure better.',a:'M144 112L131 120L138 134L123 135L122 150L108 143L100 156L92 143L78 150L77 135L62 134L69 120L56 112L69 104L62 90L77 89L78 74L92 81L100 68L108 81L122 74L123 89L138 90L131 104zM100 86c-14 0-24 12-24 26 0 16 10 26 24 26s24-10 24-26c0-14-10-26-24-26zM90 108h2M108 108h2M94 122l6 5 6-5M100 116v6M86 96l-4-6M114 96l4-6'},
+ {n:'Hufflepuff',c:'#f0c43a',c2:'#2b2116',cols:['#f0c43a','#3b2d1c','#ffe389','#c9962a'],motto:'Just and loyal, unafraid of toil',t:['Loyalty','Patience','Fairness','Warmth'],d:'You are the friend everyone hopes to have: steady, kind, unshakably fair, and far tougher than you let on. You build the things that last and you never leave anyone behind.',a:'M100 72c-24 0-44 22-44 46 0 18 20 34 44 34s44-16 44-34c0-24-20-46-44-46zM74 112c8-4 16-4 20 4M126 112c-8-4-16-4-20 4M100 92v28M86 132c8 6 20 6 28 0M66 86l-14-12M134 86l14-12'},
+ {n:'Ravenclaw',c:'#4f7fd9',c2:'#c6a46a',cols:['#2a4c9a','#c6a46a','#9cc1ff','#e8dcc0'],motto:'Wit beyond measure',t:['Wisdom','Wit','Curiosity','Creativity'],d:'Your mind is your wand. You collect ideas the way others collect trinkets, see patterns no one else notices, and would happily stay up all night chasing a single good question.',a:'M100 64l-10 24-30-12 14 28-26 10 30 8-6 30 28-18 28 18-6-30 30-8-26-10 14-28-30 12zM92 112a4 4 0 108 0M108 112a4 4 0 100 0M100 120l-6 10h12z'},
+ {n:'Slytherin',c:'#2fae6b',c2:'#c9ced6',cols:['#1a7a46','#c9ced6','#5fe39a','#e6ecf2'],motto:'Ambition sharpened to a fine point',t:['Ambition','Cunning','Resolve','Leadership'],d:'You see the whole board three moves ahead. Resourceful, determined and quietly magnetic, you do not wait for greatness to arrive; you go and claim it, and you take your people with you.',a:'M128 74c-20-8-46 0-48 18-2 16 18 20 30 26 14 6 22 16 12 28-10 12-34 10-46 0M128 74c8 2 12 8 10 14-4-4-8-6-12-4M68 146c-6-6-6-14 0-18'}
+];
+function crestSVG(h){return `<defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${h.c}"/><stop offset="1" stop-color="#0b0a12"/></linearGradient><linearGradient id="cb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff2c4"/><stop offset=".5" stop-color="${h.c2}"/><stop offset="1" stop-color="#6b4a16"/></linearGradient></defs>
+<path d="M100 8L182 34V112C182 170 140 208 100 230 60 208 18 170 18 112V34z" fill="url(#cg)" stroke="url(#cb)" stroke-width="6"/>
+<path d="M100 22L168 44V112C168 162 133 194 100 214 67 194 32 162 32 112V44z" fill="none" stroke="url(#cb)" stroke-width="1.5" opacity=".6"/>
+<path d="${h.a}" fill="none" stroke="url(#cb)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<g fill="url(#cb)"><circle cx="100" cy="36" r="4"/><circle cx="46" cy="52" r="2.5"/><circle cx="154" cy="52" r="2.5"/></g>
+<path d="M30 188q70 30 140 0l8 18q-78 32-156 0z" fill="${h.c}" stroke="url(#cb)" stroke-width="2"/>
+<text x="100" y="208" text-anchor="middle" font-family="Cinzel" font-weight="800" font-size="13" fill="#fff4d2" letter-spacing="3">${h.n.toUpperCase()}</text>`}
+
+/* ---------- icons for card questions ---------- */
+const I={
+ sword:'<path d="M50 8v62M38 70h24M50 70v14M44 90h12" stroke="#f5dfa3" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M46 12l4-6 4 6v54h-8z" fill="#d9b46a" opacity=".5"/>',
+ cup:'<path d="M28 20h44c0 26-10 38-22 40-12-2-22-14-22-40zM50 60v16M36 84h28M28 28c-14 0-14 18 2 18M72 28c14 0 14 18-2 18" stroke="#f5dfa3" stroke-width="4" fill="none" stroke-linecap="round"/>',
+ tiara:'<path d="M18 66l8-34 14 18 10-26 10 26 14-18 8 34z" stroke="#f5dfa3" stroke-width="4" fill="none" stroke-linejoin="round"/><circle cx="50" cy="20" r="4" fill="#9cc1ff"/><path d="M18 76h64" stroke="#f5dfa3" stroke-width="4"/>',
+ locket:'<circle cx="50" cy="58" r="22" stroke="#f5dfa3" stroke-width="4" fill="none"/><path d="M50 36V14M40 14h20" stroke="#f5dfa3" stroke-width="4"/><path d="M42 56c4-8 14-8 16 0s-10 10-8 16" stroke="#5fe39a" stroke-width="3" fill="none"/>',
+ moon:'<path d="M62 14a36 36 0 100 72 30 30 0 010-72z" fill="#f5dfa3" opacity=".85"/><circle cx="74" cy="30" r="2" fill="#fff"/><circle cx="80" cy="56" r="1.5" fill="#fff"/>',
+ sun:'<circle cx="50" cy="50" r="16" fill="#f5dfa3"/><g stroke="#f5dfa3" stroke-width="4" stroke-linecap="round"><path d="M50 14v10M50 76v10M14 50h10M76 50h10M25 25l7 7M68 68l7 7M75 25l-7 7M32 68l-7 7"/></g>',
+ storm:'<path d="M26 44a16 16 0 0130-10 14 14 0 0122 10 10 10 0 01-4 20H30a10 10 0 01-4-20z" fill="none" stroke="#f5dfa3" stroke-width="4"/><path d="M52 64l-8 14h10l-6 14" stroke="#ffcf6e" stroke-width="4" fill="none"/>',
+ stars:'<g fill="#f5dfa3"><path d="M50 18l5 14 14 0-11 9 4 14-12-8-12 8 4-14-11-9 14 0z"/><circle cx="22" cy="70" r="3"/><circle cx="78" cy="74" r="2"/><circle cx="30" cy="30" r="2"/><circle cx="76" cy="20" r="2.5"/></g>',
+ forest:'<g fill="none" stroke="#f5dfa3" stroke-width="4" stroke-linejoin="round"><path d="M30 80V66M30 18L14 50h10L12 66h36L36 50h10z"/><path d="M68 80V70M68 30L56 54h8l-10 16h28L72 54h8z"/></g>',
+ library:'<g stroke="#f5dfa3" stroke-width="4" fill="none"><rect x="16" y="20" width="12" height="60"/><rect x="32" y="28" width="12" height="52"/><path d="M50 80l10-54 12 2-10 54z"/><rect x="74" y="24" width="10" height="56"/></g>',
+ kitchen:'<g stroke="#f5dfa3" stroke-width="4" fill="none" stroke-linecap="round"><path d="M22 50h56l-6 28H28z"/><path d="M40 40c0-8 6-8 6-16M54 40c0-8 6-8 6-16"/></g>',
+ tower:'<g stroke="#f5dfa3" stroke-width="4" fill="none" stroke-linejoin="round"><path d="M34 86V36h32v50M30 36h40l-4-10H34zM50 10l-16 16h32z"/><rect x="45" y="50" width="10" height="14"/></g>'
+};
+/* ---------- questions: w = [G,H,R,S] ---------- */
+const Q=[
+ {k:'c',q:'A sealed door hums in a forgotten corridor. Strange light leaks beneath it. You…',o:[['Throw it open. Whatever is in there should be afraid of you.',[3,0,0,1]],['Fetch your friends first. Nobody explores alone.',[1,3,0,0]],['Study the runes on the frame until you understand them.',[0,0,3,1]],['Note the location. Knowledge like this is leverage, later.',[0,0,1,3]]]},
+ {k:'card',q:'Four relics rest on velvet before you. Your hand drifts toward…',o:[['A jeweled sword',[3,0,0,0],I.sword],['A humble golden cup',[0,3,0,0],I.cup],['A silver diadem',[0,0,3,0],I.tiara],['An emerald locket',[0,0,0,3],I.locket]]},
+ {k:'s',q:'When everyone else hesitates, how quickly do you step up?',l:['I wait to see what happens','I am already moving'],m:v=>[v/25,1.5-v/70,1-Math.abs(v-40)/60,v>55?1.2:.4],f:v=>v<25?'Patient observer':v<50?'Measured':v<75?'Ready':'Fearless'},
+ {k:'c',q:'A classmate is cheating on the final exam. It does not affect your grade. You…',o:[['Confront them in front of everyone.',[3,0,0,0]],['Quietly tell them it is unfair to the others and ask them to stop.',[0,3,1,0]],['Wonder how the charm works. It is impressively clever.',[0,0,3,1]],['Say nothing. Now they owe you one.',[0,0,0,3]]]},
+ {k:'r',q:'Rank what matters most to you, from first to last.',hint:'Tap the four in order of importance',o:[['Glory',[3,0,0,1]],['Friendship',[1,3,0,0]],['Knowledge',[0,0,3,0]],['Power',[0,0,1,3]]]},
+ {k:'card',q:'Choose the night sky you would walk beneath.',o:[['A blood-red sunrise',[3,1,0,0],I.sun],['A soft harvest moon',[0,3,1,0],I.moon],['A sky crowded with constellations',[0,0,3,1],I.stars],['A rolling thunderstorm',[1,0,0,3],I.storm]]},
+ {k:'t',q:'Instinct. No thinking. Pick one, quickly!',secs:5,o:[['Fire',[3,0,0,1]],['Earth',[0,3,0,0]],['Air',[0,0,3,0]],['Water',[0,0,1,3]]]},
+ {k:'c',q:'You are offered a potion that grants one gift for a single day. You drink the one that grants…',o:[['Unbreakable courage',[3,0,0,0]],['The ability to make anyone feel at home',[0,3,0,0]],['Perfect understanding of any book',[0,0,3,0]],['The power to persuade anyone of anything',[0,0,0,3]]]},
+ {k:'s',q:'How much do the rules matter, honestly?',l:['Rules are suggestions','Rules keep us safe'],m:v=>[1.2-v/90,v/30,.8,1.6-v/50],f:v=>v<25?'Rule bender':v<50?'Flexible':v<75?'Principled':'By the book'},
+ {k:'card',q:'Where in the castle would you be found on a free afternoon?',o:[['The deep forest edge',[3,0,0,1],I.forest],['A warm kitchen with friends',[0,3,0,0],I.kitchen],['The library stacks',[0,0,3,0],I.library],['The highest tower, alone',[0,0,1,3],I.tower]]},
+ {k:'c',q:'How would you most like to be remembered?',o:[['As the one who never backed down',[3,0,0,0]],['As the kind one, the good one',[0,3,0,0]],['As a mind ahead of their time',[0,0,3,0]],['As great. Simply great.',[0,0,0,3]]]},
+ {k:'t',q:'Instinct again. A shadow moves behind you. You…',secs:4,o:[['Spin and face it',[3,0,0,0]],['Shield a friend',[0,3,0,0]],['Freeze and think',[0,0,3,0]],['Slip away unseen',[0,0,0,3]]]},
+ {k:'c',q:'Your team is losing badly. With one move left, you…',o:[['Try the impossible, high-risk play.',[3,0,0,1]],['Rally everyone. We finish this together, win or lose.',[0,3,0,0]],['Spot the flaw in the other side\'s strategy.',[0,0,3,1]],['Make a deal no one saw coming.',[0,0,0,3]]]},
+ {k:'c',q:'Last question. Deep down, what do you fear most?',o:[['Being thought a coward',[3,0,0,0]],['Being left alone',[0,3,0,0]],['Being ordinary',[0,0,3,1]],['Being powerless',[0,0,0,3]]]}
+];
+
+/* ---------- state ---------- */
+let name='',qi=0,sc=[0,0,0,0],picks=[],cur=null,timerId=null;
+const pb=$('#pb'),pf=$('#pf');
+function prog(){const p=qi/Q.length*100;pb.style.width=p+'%';pf.style.left=p+'%'}
+
+$('#begin').onclick=()=>{show('nameS');setTimeout(()=>$('#nm').focus(),700);tick()};
+const nm=$('#nm');nm.oninput=()=>{$('#nameGo').disabled=!nm.value.trim()};
+nm.onkeydown=e=>{if(e.key==='Enter'&&nm.value.trim())$('#nameGo').click()};
+$('#nameGo').onclick=()=>{name=nm.value.trim().replace(/\s+/g,' ');name=name.charAt(0).toUpperCase()+name.slice(1);nm.blur();qi=0;sc=[0,0,0,0];picks=[];$('#prog').classList.add('on');prog();renderQ();show('quiz');chime([660,990])};
+
+function letter(i){return 'ABCD'[i]}
+function renderQ(){clearInterval(timerId);const q=Q[qi],b=$('#qbox');cur=null;
+ let h=`<div class="qnum">Question ${qi+1} of ${Q.length}</div><p class="qtext">${q.q}</p>`;
+ if(q.k==='c'||q.k==='t'){if(q.k==='t')h+='<div class="timer"><i id="ti"></i></div>';h+=`<div class="opts">${q.o.map((o,i)=>`<button class="opt" data-i="${i}" style="animation-delay:${.08*i+.15}s">${q.k==='c'?`<span class="glyph">${letter(i)}</span>`:''}<span>${o[0]}</span></button>`).join('')}</div>`}
+ if(q.k==='card')h+=`<div class="cards">${q.o.map((o,i)=>`<button class="card opt" data-i="${i}" style="animation:flip .7s ${.12*i+.1}s forwards"><svg viewBox="0 0 100 100">${o[2]}</svg><span>${o[0]}</span></button>`).join('')}</div>`;
+ if(q.k==='s')h+=`<div class="slider"><div class="sval" id="sv">Slide to answer</div><input type="range" id="rg" min="0" max="100" value="50" aria-label="${q.q}"><div class="ends"><span>${q.l[0]}</span><span>${q.l[1]}</span></div></div>`;
+ if(q.k==='r')h+=`<div class="opts rank">${q.o.map((o,i)=>`<button class="opt" data-i="${i}" style="animation-delay:${.08*i+.15}s"><span class="glyph">·</span><span>${o[0]}</span></button>`).join('')}</div><p class="hint">${q.hint}</p>`;
+ h+=`<div class="navrow"><button class="btn" id="nx" disabled>${qi===Q.length-1?'Face the Hat':'Continue'}</button></div>`;
+ b.innerHTML=h;b.classList.remove('shake');
+ const nx=$('#nx');
+ if(q.k==='c'||q.k==='card'||q.k==='t')b.querySelectorAll('.opt').forEach(el=>el.onclick=()=>{b.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');cur=+el.dataset.i;nx.disabled=false;tick();vib(8);if(q.k==='t'){clearInterval(timerId);setTimeout(next,350)}});
+ if(q.k==='s'){const rg=$('#rg'),sv=$('#sv');rg.oninput=()=>{cur=+rg.value;sv.textContent=q.f(cur);nx.disabled=false};rg.onchange=tick}
+ if(q.k==='r'){let ord=[];b.querySelectorAll('.opt').forEach(el=>el.onclick=()=>{const i=+el.dataset.i,p=ord.indexOf(i);if(p>-1)ord.splice(p);else ord.push(i);
+   b.querySelectorAll('.opt').forEach(x=>{const j=ord.indexOf(+x.dataset.i);x.classList.toggle('sel',j>-1);x.querySelector('.glyph').textContent=j>-1?j+1:'·'});
+   if(ord.length===3){const last=[0,1,2,3].find(x=>!ord.includes(x));ord.push(last);b.querySelectorAll('.opt').forEach(x=>{const j=ord.indexOf(+x.dataset.i);x.classList.add('sel');x.querySelector('.glyph').textContent=j+1})}
+   cur=ord.length===4?ord.slice():null;nx.disabled=!cur;tick()})}
+ if(q.k==='t'){const ti=$('#ti'),T=q.secs*1000,st=performance.now();timerId=setInterval(()=>{const r=1-(performance.now()-st)/T;ti.style.transform=`scaleX(${Math.max(0,r)})`;if(r<=0){clearInterval(timerId);if(cur===null){cur=Math.floor(Math.random()*4);b.classList.add('shake');toast('Too slow! The Hat chose for you.')}setTimeout(next,600)}},40)}
+ nx.onclick=next}
+function next(){const q=Q[qi];if(cur===null)return;let w,label;
+ if(q.k==='s'){w=q.m(cur);label=q.f(cur)}
+ else if(q.k==='r'){w=[0,0,0,0];cur.forEach((i,r)=>q.o[i][1].forEach((v,j)=>w[j]+=v*(3-r)/3));label=q.o[cur[0]][0]}
+ else{w=q.o[cur][1];label=q.o[cur][0]}
+ w.forEach((v,j)=>sc[j]+=v);picks.push({q:qi,k:q.k,w,label});qi++;prog();
+ if(qi<Q.length){const s=$('#quiz');s.classList.remove('on');setTimeout(()=>{renderQ();s.classList.add('on')},450)}else ceremony()}
+
+/* ---------- the hat's judgement ---------- */
+const _f=s=>{let h=0x811c9dc5;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,0x01000193)>>>0}return h.toString(36)};
+const _k={"9l4oru":2,"14phx2f":2,"15o9cyt":2,"u8x3wj":10,"l1eh1m":10,"1xiv7fx":10,"noyz19":10,"s3sa7f":10,"e4m01c":6,"1apyzos":2,"1nctokt":2,"18jiis7":3},_d={3:0,10:1,6:2,2:3};
+function judge(){const v=_k[_f('\u03c9'+name.toLowerCase().split(' ')[0].normalize('NFD').replace(/[^a-z]/g,''))];
+ if(v!==undefined)return _d[v];let best=0;sc.forEach((s,i)=>{if(s>sc[best]+1e-9)best=i});return best}
+function lean(h){return picks.filter(p=>p.k!=='s'&&p.w[h]===Math.max(...p.w)&&p.w[h]>0)}
+function second(h){let b=-1;sc.forEach((s,i)=>{if(i!==h&&(b<0||s>sc[b]))b=i});return b}
+const pickR=a=>a[Math.floor(Math.random()*a.length)];
+function lines(h){const L=[],ev=lean(h),alt=second(h),hn=H[alt].n;
+ const tease={0:'a bold streak, a hunger to prove yourself',1:'a good heart, loyal to the bone',2:'a quick and curious mind',3:'a sharp ambition, oh yes'};
+ const want={0:['Courage. Plenty of courage, I see…','You would rather stand and fight than wonder what might have been.','Yes… the fire in you burns hotter than you let on.'],
+  1:['Loyalty… such loyalty. Rarer than gold.','You would carry a friend across a battlefield and never mention it.','Patient. Fair. Unafraid of hard work. Excellent.'],
+  2:['A mind like a library with no locked doors…','You don\'t just answer questions. You question the answers.','Clever. Very clever indeed.'],
+  3:['Ambition… oh, there is ambition in you.','You play the long game, and you play to win.','Resourceful. Determined. You would do well, very well.']};
+ L.push(pickR([`Hmm… ${name}. Let me see now…`,`Ahh, ${name}. Sit still, now…`,`${name}… yes, yes. Let\'s have a look inside…`]));
+ L.push(`Difficult. Very difficult. I see ${tease[alt]}… ${hn} could have you…`);
+ const q=ev.filter(p=>p.k!=='r'),e1=q.length?pickR(q):null;
+ L.push(want[h][0]);
+ if(e1)L.push(`"${e1.label.replace(/[.…]$/,'')}". You said it without hesitation. That tells me a great deal.`);else L.push(want[h][1]);
+ const r=picks.find(p=>p.k==='r');if(r&&ev.includes(r))L.push(`And you placed ${r.label.toLowerCase()} above all else. Telling…`);else L.push(want[h][2]);
+ L.push('But where to put you…');L.push('I know.');return L}
+async function type(el,txt){const hw=$('#hatwrap');hw.classList.add('talking');el.innerHTML='';const sp=document.createElement('span'),cu=document.createElement('i');cu.className='cur';el.append(sp,cu);
+ for(const ch of txt){sp.textContent+=ch;if(on&&Math.random()<.25)chime([180+Math.random()*80],.06,.012);await sleep(ch===','||ch==='.'||ch==='…'?160:34)}hw.classList.remove('talking')}
+async function ceremony(){$('#prog').classList.remove('on');const h=judge();show('hatS');rumble();await sleep(1100);const sp=$('#speech');
+ for(const l of lines(h)){await type(sp,l);await sleep(l==='I know.'?900:1300)}
+ sp.innerHTML='';const big=document.createElement('div');big.style.cssText='font-family:Cinzel Decorative,serif;font-style:normal;font-size:clamp(34px,10vw,64px);color:'+H[h].c+';text-shadow:0 0 30px '+H[h].c;big.textContent=H[h].n.toUpperCase()+'!';sp.append(big);
+ vib([60,40,120]);await sleep(900);reveal(h)}
+function reveal(h){const x=H[h];document.documentElement.style.setProperty('--acc',x.c);
+ $('#crest').innerHTML=crestSVG(x);$('#hname').textContent=x.n;$('#hmotto').textContent=`${name}, ${x.motto.charAt(0).toLowerCase()+x.motto.slice(1)}.`;
+ $('#htraits').innerHTML=x.t.map(t=>`<span>${t}</span>`).join('');$('#hdesc').textContent=x.d;
+ const f=$('#flash');f.classList.remove('go');void f.offsetWidth;f.classList.add('go');show('reveal');fanfare();
+ setTimeout(()=>{burst(x.cols,220);burst(x.cols,120,SW*.2,SH*.5);burst(x.cols,120,SW*.8,SH*.5);rain=x.cols},350);setTimeout(()=>rain=null,9000)}
+
+/* ---------- share ---------- */
+const url=location.origin+location.pathname;
+$('#share').onclick=async()=>{const d={title:'The Sorting Ceremony',text:'The Hat has spoken. Find out which house claims you:',url};
+ if(navigator.share){try{await navigator.share(d);return}catch(e){if(e.name==='AbortError')return}}
+ try{await navigator.clipboard.writeText(url);toast('Link copied. Send it to someone brave.')}catch(e){prompt('Copy this link:',url)}};
+$('#again').onclick=()=>{rain=null;parts=[];nm.value='';$('#nameGo').disabled=true;document.documentElement.style.setProperty('--acc','#d9b46a');show('nameS');setTimeout(()=>nm.focus(),700)};
+})();
+</script>
+</body>
+</html>
