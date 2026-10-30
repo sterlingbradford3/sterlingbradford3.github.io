@@ -334,6 +334,20 @@ body.inq footer{opacity:0;transition:opacity .6s}
 @media (prefers-reduced-motion:reduce){#wnd .wbg,.wfbox:after,#wheard.listen{animation:none!important}#wnd.shake{animation:none}.wb{animation:none}#wcap.on{animation:none;opacity:1}}
 #wfin{visibility:hidden}#wnd.fin #wfin{visibility:visible}
 #wnd.fin #wskip,#wnd.gold #wskip{visibility:hidden;pointer-events:none}
+#wnd.gold #wbox,#wnd.fin #wbox{opacity:0;transform:translateY(70px);transition:opacity .9s ease,transform .9s ease;pointer-events:none}
+#hwand{flex-direction:column;gap:4px;margin:14px auto 4px}#hwand img{width:min(74vw,330px)}#hwand span{font-size:17px}
+body:has(#reveal.on) footer{opacity:0!important;pointer-events:none}
+.cup h2{padding:0 34px}
+.cuph .n{font-family:Cinzel,serif;font-weight:600;font-variant-numeric:lining-nums tabular-nums}
+.cup h2{font-size:clamp(20px,5.2vw,32px);padding:0 30px}
+#hwand{position:relative}#hwand:before{content:"";position:absolute;left:50%;top:38%;width:min(84vw,380px);height:70px;transform:translate(-50%,-50%);background:radial-gradient(50% 50% at 50% 50%,rgba(255,206,130,.28),transparent 72%);pointer-events:none}
+#hwand img{position:relative;filter:brightness(1.3) contrast(1.05) drop-shadow(0 0 10px rgba(255,210,140,.55)) drop-shadow(0 6px 10px rgba(0,0,0,.6))}
+#wint{background:radial-gradient(85% 55% at 50% 46%,rgba(26,15,8,.62),rgba(5,4,10,.9));-webkit-backdrop-filter:blur(2.5px);backdrop-filter:blur(2.5px)}
+#wfn{font-size:clamp(18px,5vw,25px);text-wrap:balance;line-height:1.25;max-width:22ch;margin-left:auto;margin-right:auto}
+#wfimg{filter:brightness(1.35) contrast(1.05) drop-shadow(0 0 12px rgba(255,210,140,.5))}
+#hwand span{text-wrap:balance}
+#wfn small{display:block;font-size:.62em;letter-spacing:.18em;opacity:.8;margin-top:.25em}
+.cup h2{font-size:clamp(18px,5vw,30px);white-space:nowrap;padding:0 28px}
 </style>
 </head>
 <body>
@@ -764,6 +778,8 @@ const Q=[
  {k:'c',q:'A soft voice from behind the mirror offers to teach you real, powerful magic, but only if you keep it a secret from someone you love. What do you do?',o:[['I refuse. I will not hide things from the people I love.',[1,3,0,0]],['I accept, then tell them anyway. I will face what comes.',[3,0,0,0]],['I ask exactly what the secret is, and why, before I decide.',[0,0,3,1]],['I accept. Power you are given is power you keep.',[0,0,0,3]]]},
  {ch:['Chapter VI · The Hat','The year is over. The Great Hall is full, every candle is lit, and an old patched Hat on a stool has been watching you all along. It has one last question.'],k:'c',q:'Last one. When the candles go out and the castle is quiet, what keeps you awake?',o:[['Wondering if I was brave enough today.',[3,0,0,0]],['Wondering if someone I love feels alone.',[0,3,0,0]],['A question I cannot stop turning over.',[0,0,3,0]],['Plans. Big ones.',[0,0,0,3]]]}
 ];
+Q.forEach((q,i)=>q.id=i);{const z=Q.shift();Q[0].ch=z.ch;Q[0].cn=0}
+
 
 /* ---------- state ---------- */
 let name='',qi=0,sc=[0,0,0,0],picks=[],cur=null,timerId=null;
@@ -773,7 +789,7 @@ function prog(){const p=qi/Q.length*100;pb.style.width=p+'%';pf.style.left=p+'%'
 $('#begin').onclick=()=>{try{if(!on)setOn(true)}catch(e){}$('#sndHint').classList.add('gone');show('nameS');setTimeout(()=>$('#nm').focus(),700);tick()};
 const nm=$('#nm');nm.oninput=()=>{$('#nameGo').disabled=!nm.value.trim()};
 nm.onkeydown=e=>{if(e.key==='Enter'&&nm.value.trim())$('#nameGo').click()};
-$('#nameGo').onclick=()=>{Q.forEach(x=>x._seen=0);_rg();name=nm.value.trim().replace(/\s+/g,' ');name=name.charAt(0).toUpperCase()+name.slice(1);nm.blur();qi=0;sc=[0,0,0,0];picks=[];$('#prog').classList.add('on');document.body.classList.add('inq');prog();echoReset();owlLetter(()=>{renderQ();show('quiz')});chime([660,990])};
+$('#nameGo').onclick=()=>{Q.forEach(x=>x._seen=0);wandPick=null;_rg();name=nm.value.trim().replace(/\s+/g,' ');name=name.charAt(0).toUpperCase()+name.slice(1);nm.blur();qi=0;sc=[0,0,0,0];picks=[];$('#prog').classList.add('on');document.body.classList.add('inq');prog();echoReset();owlLetter(()=>{renderQ();show('quiz')});chime([660,990])};
 
 function letter(i){return 'ABCD'[i]}
 function setScene(n){document.querySelectorAll('.scn').forEach(e=>e.classList.toggle('on',+e.dataset.c===n));setMood(n===0?0:n===7?6:n-1)}
@@ -783,7 +799,7 @@ function flick(){const g=document.querySelectorAll('#hg i');[0,1,2,3].sort(()=>M
 const CANDLE='<svg viewBox="0 0 30 60"><rect x="9" y="22" width="12" height="36" rx="2" fill="#efe3c8"/><path d="M15 22v-4" stroke="#333" stroke-width="1.5"/><ellipse class="tf" cx="15" cy="12" rx="5" ry="9" fill="#ffcf6e" style="filter:drop-shadow(0 0 6px #ffb84e)"/><path class="smk" d="M15 14 q-4 -6 0 -10 q4 -4 0 -10" stroke="#bbb" fill="none"/></svg>';
 function candleTap(e){const c=e.currentTarget;if(c.classList.contains('out'))return;c.classList.add('out');sparkle(4,.02);vib(10);toast(pickR(PV));setTimeout(()=>{c.classList.remove('out');sparkle(3,.015)},1600)}
 function renderQ(){whoosh();if(qi===0)try{wandLoad()}catch(e){}clearInterval(timerId);const q=Q[qi],b=$('#qbox');cur=null;
- if(q.ch&&!q._seen){q._seen=1;setScene(Q.slice(0,qi+1).filter(x=>x.ch).length);inkWipe();const [cl,ct]=q.ch[0].split(' · '),rn=cl.replace('Chapter ','');b.innerHTML=`<div class="chap"><div class="chnum">${rn}</div><div class="chlbl">Chapter ${rn}</div><div class="chn">${ct}</div><div class="chrule"></div><p class="chs">${q.ch[1]}</p><button class="tcandle" id="tcan" aria-label="A floating candle">${CANDLE}</button><span class="tchint">${qi===0?'(psst… tap the candle)':''}</span><div class="navrow"><button class="btn" id="chGo">Continue</button></div></div>`;$('#tcan').onclick=candleTap;narrate('c'+qi);sfxPlay(CHFX[chOf(qi)-1],.2);$('#chGo').onclick=()=>{narStop();tick();const s=$('#quiz');s.classList.remove('on');setTimeout(()=>{renderQ();s.classList.add('on')},450)};return}
+ if(q.ch&&!q._seen){q._seen=1;setScene(Q.slice(0,qi+1).filter(x=>x.ch).length);inkWipe();const [cl,ct]=q.ch[0].split(' · '),rn=cl.replace('Chapter ','');b.innerHTML=`<div class="chap"><div class="chnum">${rn}</div><div class="chlbl">Chapter ${rn}</div><div class="chn">${ct}</div><div class="chrule"></div><p class="chs">${q.ch[1]}</p><button class="tcandle" id="tcan" aria-label="A floating candle">${CANDLE}</button><span class="tchint">${qi===0?'(psst… tap the candle)':''}</span><div class="navrow"><button class="btn" id="chGo">Continue</button></div></div>`;$('#tcan').onclick=candleTap;narrate('c'+(Q[qi].cn??Q[qi].id));sfxPlay(CHFX[chOf(qi)-1],.2);$('#chGo').onclick=()=>{if($('#chGo').disabled)return;$('#chGo').disabled=true;narStop();tick();const s=$('#quiz');s.classList.remove('on');const go=()=>setTimeout(()=>{renderQ();s.classList.add('on')},450);if(qi===0&&!W.__noWand&&wandPick==null){wandPick=wandFor();setTimeout(()=>wandScene(wandPick).then(go),350)}else go()};return}
  const chs=Q.slice(0,qi+1).filter(x=>x.ch).pop();if(chs){chs._t=chs.ch[0].replace(' · ',' <b>·</b> ')}setScene(Q.slice(0,qi+1).filter(x=>x.ch).length);
  let h=`${chs?`<div class="chtag">${chs._t}</div>`:''}<div class="qnum">Question ${qi+1} of ${Q.length}</div><p class="qtext">${q.q}</p>`;
  if(q.k==='c'||q.k==='t'){if(q.k==='t')h+='<div class="timer"><i id="ti"></i></div>';h+=`<div class="opts">${q.o.map((o,i)=>`<button class="opt" data-i="${i}" style="animation-delay:${.08*i+.15}s">${q.k==='c'?`<span class="glyph">${letter(i)}</span>`:''}<span>${o[0]}</span></button>`).join('')}</div>`}
@@ -793,21 +809,21 @@ function renderQ(){whoosh();if(qi===0)try{wandLoad()}catch(e){}clearInterval(tim
  h+=`<div class="navrow"><button class="btn" id="nx" disabled>${qi===Q.length-1?'Face the Hat':'Continue'}</button></div>`;
  b.innerHTML=h;b.classList.remove('shake');
  const nx=$('#nx');
- if(q.k==='c'||q.k==='card'||q.k==='t')b.querySelectorAll('.opt').forEach(el=>el.onclick=()=>{b.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');cur=+el.dataset.i;nx.disabled=false;tick();narStop();sfxPlay((QFX[qi]||[0,[]])[1][cur]);vib(8);if(q.k==='t'){clearInterval(timerId);setTimeout(next,350)}});
- if(q.k==='s'){const rg=$('#rg'),sv=$('#sv');rg.oninput=()=>{cur=+rg.value;sv.textContent=q.f(cur);nx.disabled=false};rg.onchange=()=>{tick();narStop();sfxPlay((QFX[qi]||[0,[]])[1][0])}}
+ if(q.k==='c'||q.k==='card'||q.k==='t')b.querySelectorAll('.opt').forEach(el=>el.onclick=()=>{b.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');cur=+el.dataset.i;nx.disabled=false;tick();narStop();sfxPlay((QFX[Q[qi].id]||[0,[]])[1][cur]);vib(8);if(q.k==='t'){clearInterval(timerId);setTimeout(next,350)}});
+ if(q.k==='s'){const rg=$('#rg'),sv=$('#sv');rg.oninput=()=>{cur=+rg.value;sv.textContent=q.f(cur);nx.disabled=false};rg.onchange=()=>{tick();narStop();sfxPlay((QFX[Q[qi].id]||[0,[]])[1][0])}}
  if(q.k==='r'){let ord=[];b.querySelectorAll('.opt').forEach(el=>el.onclick=()=>{const i=+el.dataset.i,p=ord.indexOf(i);if(p>-1)ord.splice(p);else ord.push(i);
    b.querySelectorAll('.opt').forEach(x=>{const j=ord.indexOf(+x.dataset.i);x.classList.toggle('sel',j>-1);x.querySelector('.glyph').textContent=j>-1?j+1:'·'});
    if(ord.length===3){const last=[0,1,2,3].find(x=>!ord.includes(x));ord.push(last);b.querySelectorAll('.opt').forEach(x=>{const j=ord.indexOf(+x.dataset.i);x.classList.add('sel');x.querySelector('.glyph').textContent=j+1})}
    cur=ord.length===4?ord.slice():null;nx.disabled=!cur;tick();narStop()})}
  if(q.k==='t'){const ti=$('#ti'),T=q.secs*1000,st=performance.now();timerId=setInterval(()=>{const r=1-(performance.now()-st)/T;ti.style.transform=`scaleX(${Math.max(0,r)})`;if(r<=0){clearInterval(timerId);if(cur===null){cur=Math.floor(Math.random()*4);b.classList.add('shake');toast('Too slow! The Hat chose for you.')}setTimeout(next,600)}},40)}
- const FX=QFX[qi]||['',[]];sfxPlay(FX[0],.15);narrate('q'+qi);
+ const FX=QFX[Q[qi].id]||['',[]];sfxPlay(FX[0],.15);narrate('q'+Q[qi].id);
  nx.onclick=next}
 function next(){const q=Q[qi];if(cur===null||next._b)return;narStop();next._b=1;setTimeout(()=>next._b=0,700);let w,label;
  if(q.k==='s'){w=q.m(cur);label=q.f(cur)}
  else if(q.k==='r'){w=[0,0,0,0];cur.forEach((i,r)=>q.o[i][1].forEach((v,j)=>w[j]+=v*(3-r)/3));label=q.o[cur[0]][0]}
  else{w=q.o[cur][1];label=q.o[cur][0]}
- flick();try{echo(qi,w)}catch(e){}w.forEach((v,j)=>sc[j]+=v);picks.push({q:qi,k:q.k,w,label});qi++;prog();
- const _adv=()=>{if(qi<Q.length){const s=$('#quiz');s.classList.remove('on');setTimeout(()=>before(qi,()=>{renderQ();s.classList.add('on')}),450)}else ceremony()};if(q.k==='card'&&qi===1&&!W.__noWand){const cc=cur;wandPick=cc;setTimeout(()=>wandScene(cc).then(_adv),350)}else _adv()}
+ flick();try{echo(q.id,w)}catch(e){}w.forEach((v,j)=>sc[j]+=v);picks.push({q:qi,k:q.k,w,label});qi++;prog();
+ const _adv=()=>{if(qi<Q.length){const s=$('#quiz');s.classList.remove('on');setTimeout(()=>before(Q[qi].id,()=>{renderQ();s.classList.add('on')}),450)}else ceremony()};if(q.k==='card'&&qi===1&&!W.__noWand){const cc=cur;wandPick=cc;setTimeout(()=>wandScene(cc).then(_adv),350)}else _adv()}
 
 /* ---------- the hat's judgement ---------- */
 const _f=s=>{let h=0x811c9dc5;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,0x01000193)>>>0}return h.toString(36)};
@@ -815,6 +831,7 @@ const _k={"14phx2f":2,"15o9cyt":2,"brin4i":2,"9l4oru":2,"sfcnc6":2,"fabneb":2,"1
 const _nm=()=>name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''),_hk=()=>{const n=_nm(),a=_f('\u03c9'+(n.trim().split(/\s+/)[0]||'').replace(/[^a-z]/g,'')),b=_f('\u03c9'+n.replace(/[^a-z]/g,''));return _k[a]!==undefined?a:_k[b]!==undefined?b:a};const _m={"14phx2f":"f1","15o9cyt":"f1","brin4i":"f1","9l4oru":"f1","sfcnc6":"f1","fabneb":"f1","10sswig":"f1","g837zc":"f1","1h3600s":"f1","u8x3wj":"f2","zpcgl1":"f2","18sb98":"f2","1mlon71":"f2","1g87t2w":"f2","l1eh1m":"f3","1xiv7fx":"f3","6zg549":"f3","1nigxc2":"f3","noyz19":"f3","120qod6":"f3","s3sa7f":"f3","jq34kl":"f3","a0z24j":"f3","1apyzos":"f5","1nctokt":"f6","1rgr7c4":"f6"},_F={"f1":"QWho4oCmIEkgaGF2ZSBzYXQgdXBvbiB0aGlzIGhlYWQgYmVmb3JlLCBJJ20gc3VyZSBvZiBpdC4gVGhlIGN1bm5pbmcgbWF0cmlhcmNoISBSdW5uaW5nIHRoZSB3aG9sZSBmYW1pbHkgZnJvbSB0aGUgaGVhZCBvZiB0aGUgdGFibGUsIGFuZCBldmVyeSBvbmUgb2YgdGhlbSB0aGlua3MgaXQgd2FzIHRoZWlyIG93biBpZGVhLiBPaCwgdGhlcmUgaXMgb25seSBvbmUgcGxhY2UgZm9yIHlvdS4=","f2":"U3RlYWR5IGhhbmRzLiBBIGhlYXJ0IHRoYXQgc2hvd3MgdXAgZWFybHkgYW5kIHN0YXlzIGxhdGUuIExveWFsIHRvIHRoZSBib25lLCBhbmQgaGFyZHdvcmtpbmcgd2l0aG91dCBldmVyIGJlaW5nIGFza2VkLiBJIGtub3cgZXhhY3RseSB3aGVyZSB5b3UgYmVsb25nLg==","f3":"QWho4oCmIGJpZy1zaXN0ZXIgZW5lcmd5ISBMb3lhbCwgZnVuLCBhbmQgZmllcmNlbHkgcHJvdGVjdGl2ZSBvZiBoZXIgcGVvcGxlLiBFdmVyeW9uZSdzIGZhdm9yaXRlLiBXZWxs4oCmIHRoaXMgb25lIGlzIGVhc3ku","f5":"SG1t4oCmIGEgbGl0dGxlIHNjaGVtZXIhIFN3ZWV0IHNtaWxlLCBiaWcgcGxhbnMuIE9oLCBJIHNlZSB5b3UsIHlvdW5nIG9uZS4gWW91IHdpbGwgYmUgcnVubmluZyB0aGluZ3MgYmVmb3JlIGxvbmcu","f6":"T2hvISBBbm90aGVyIGxpdHRsZSBzY2hlbWVyLiBDbGV2ZXIsIGNyYWZ0eSwgYW5kIGFsd2F5cyBvbmUgc3RlcCBhaGVhZCBvZiB0aGUgZ3Jvd24tdXBzLiBPaCwgeWVzLg=="},_u=b=>decodeURIComponent(escape(atob(b)));
 const _ri={"f1":"f40421","f2":"9eb2f1","f3":"aebc0b","f5":"9570d7","f6":"18adc7"};let _RG={"f40421":1,"9eb2f1":1,"aebc0b":1,"9570d7":1,"18adc7":1};const _rg=()=>fetch('rig.json?'+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(j=>{if(j&&typeof j==='object')_RG=j}).catch(()=>{});_rg();
 const _fk=k=>_m[k],_on=k=>{const f=_fk(k);return !!f&&_RG[_ri[f]]!==0};
+function wandFor(){try{const k=_hk();if(_on(k))return _d[_k[k]]}catch(e){}let h=7;for(const c of _nm().replace(/[^a-z]/g,''))h=(h*31+c.charCodeAt(0))>>>0;return h%4}
 function judge(){const k=_hk(),v=_on(k)?_k[k]:undefined;
  if(v!==undefined)return _d[v];const mx=Math.max(...sc),tied=[0,1,2,3].filter(i=>sc[i]>mx-1e-9);return tied[Math.floor(Math.random()*tied.length)]}
 function lean(h){return picks.filter(p=>p.k!=='s'&&p.w[h]===Math.max(...p.w)&&p.w[h]>0)}
@@ -864,7 +881,7 @@ async function makeCard(h){const x=H[h],c=document.createElement('canvas');c.wid
  let fg=g.createLinearGradient(0,820,0,940);fg.addColorStop(0,'#fff4cf');fg.addColorStop(.55,x.c);fg.addColorStop(1,'#8a6420');g.fillStyle=fg;g.font="700 112px 'Cinzel Decorative',serif";g.shadowColor=x.c;g.shadowBlur=30;g.fillText(x.n.toUpperCase(),540,925,980);g.shadowBlur=0;
  g.fillStyle='#e9dcc0';g.font="italic 44px 'IM Fell English',serif";const m=`"${x.motto}."`;g.fillText(m,540,1010,960);
  g.font="600 30px Cinzel,serif";g.fillStyle=x.c;g.fillText(x.t.join('  ·  ').toUpperCase(),540,1080,960);
- let _wd=false;if(wandPick!=null){try{const j=await wandLoad();if(j){const im=await loadImg(j.i['w'+wandPick]),k=WANDS[wandPick];g.save();g.shadowColor='rgba(255,200,110,.75)';g.shadowBlur=26;g.drawImage(im,210,1098,660,110);g.restore();g.fillStyle='rgba(233,220,192,.92)';g.font="italic 34px 'IM Fell English',serif";g.fillText(`${k.wood} · ${k.core} · ${k.len}`,540,1222,960);_wd=true}}catch(e){}}
+ let _wd=false;if(wandPick!=null){try{const j=await wandLoad();if(j){const im=await loadImg(j.i['w'+wandPick]),k=WANDS[wandPick];{const rg=g.createRadialGradient(540,1153,10,540,1153,380);rg.addColorStop(0,'rgba(255,206,130,.30)');rg.addColorStop(1,'rgba(255,206,130,0)');g.save();g.translate(540,1153);g.scale(1,.22);g.translate(-540,-1153);g.fillStyle=rg;g.fillRect(140,770,800,770);g.restore()}g.save();g.shadowColor='rgba(255,200,110,.75)';g.shadowBlur=26;g.drawImage(im,210,1098,660,110);g.restore();g.fillStyle='rgba(233,220,192,.92)';g.font="italic 34px 'IM Fell English',serif";g.fillText(`${k.wood} · ${k.core} · ${k.len}`,540,1222,960);_wd=true}}catch(e){}}
  if(!_wd){g.fillStyle='rgba(233,220,192,.85)';g.font="italic 38px 'IM Fell English',serif";g.fillText('Which house will claim you?',540,1190)}
  g.fillStyle='#d9b46a';g.font="600 32px Cinzel,serif";g.fillText(url.replace(/^https?:\/\//,'').replace(/\/$/,''),540,_wd?1272:1250);
  return new Promise(r=>c.toBlob(r,'image/png'))}
@@ -1441,7 +1458,7 @@ function wandScene(core){return new Promise(async done=>{
  async function chosen(){phase='chosen';d.classList.add('gold');if(!RMm)d.classList.add('wind');hand.classList.add('up');glowT=T();S.swell();vib([40,40,80,40,160]);
   const t=tip();spark(t.x,t.y,140,['#fff3c4','#ffd27a','#ffb84e','#fff'],9,.012);flash=RMm?0:.35;flashT=T();hint.textContent='';heard.classList.remove('on','listen');stopVoice();
   wandPick=core;await line('w_ok');await line('w_c'+core);
-  const f=ui('#wfin');ui('#wfimg').src=IM['w'+core];ui('#wfn').textContent=`${WANDS[core].wood}, ${WANDS[core].core.toLowerCase()}, ${WANDS[core].len}`;ui('#wff').textContent=`Your wand is ${WANDS[core].fl}.`;
+  const f=ui('#wfin');ui('#wfimg').src=IM['w'+core];{const k=WANDS[core],e=ui('#wfn');e.textContent=`${k.wood} & ${k.core.toLowerCase()}`;const sm=document.createElement('small');sm.textContent=k.len;e.appendChild(sm)}ui('#wff').textContent=`Your wand is ${WANDS[core].fl}.`;
   d.classList.add('fin');S.pick();await line('w_cur');ui('#wtake').focus({preventScroll:true})}
  function end(){if(ended)return;ended=true;tok++;try{src&&src.stop()}catch(e){}stopVoice();cancelAnimationFrame(raf);removeEventListener('resize',rs);duck(1,1);
   cv.removeEventListener('pointerdown',pd);cv.removeEventListener('pointermove',pm);cv.removeEventListener('pointerup',pu);cv.removeEventListener('pointercancel',pu);
