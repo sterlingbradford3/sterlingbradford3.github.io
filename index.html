@@ -263,6 +263,14 @@ body.inq footer{opacity:0;transition:opacity .6s}
 #cr .emb{animation:emb 2.6s linear infinite}@keyframes emb{0%{transform:translate(0,0);opacity:0}15%{opacity:1}100%{transform:translate(var(--ex),-180px);opacity:0}}
 .hatwrap.h3::after{content:'';position:absolute;left:12%;right:12%;bottom:4%;height:16%;background:radial-gradient(closest-side,rgba(255,190,110,.28),transparent);pointer-events:none;z-index:-1}
 .hatwrap.h3{margin-bottom:16px}
+
+.ltr{pointer-events:none}#owl.unfold .ltr{pointer-events:auto}
+#owl .env{cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+#owl .env>*:not(.seal){pointer-events:none}#owl .env::after{content:'';position:absolute;inset:-28px;z-index:5}
+#owl.open .env{pointer-events:none}#owl .env>.seal{z-index:6}
+#owl .ohint{pointer-events:none;z-index:6}#owl.ready .ohint{animation:ohp 1.6s ease-in-out infinite}@keyframes ohp{50%{opacity:.45}}#owl.open .ohint{animation:none;opacity:0}
+.oopen{position:absolute;bottom:5%;left:50%;transform:translateX(-50%);z-index:7;display:none;touch-action:manipulation}#owl.fb:not(.open) .oopen{display:block}#owl.fb .ohint{display:none}.oopen{white-space:nowrap}
+.toast{pointer-events:none}
 #spl{background:#05040a;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;overscroll-behavior:none}#spc{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
 #spl .dtop{top:calc(54px + env(safe-area-inset-top));transition:opacity .4s}#spl .dsub{margin:.4em 0 0;font-style:italic;color:var(--ink);opacity:.85;font-size:clamp(15px,4vw,18px)}
 #spl .dsp{margin:.35em 0 0;text-align:center;font-family:'Cinzel Decorative',serif;font-size:clamp(20px,6vw,30px);color:#fff;margin:0;pointer-events:none;text-shadow:0 0 18px var(--sc,#ffd27a),0 0 40px var(--sc,#ffd27a);letter-spacing:.06em;opacity:0;transition:opacity .5s}
@@ -401,7 +409,7 @@ body.inq footer{opacity:0;transition:opacity .6s}
 <div class="env" id="env"><div class="envb"></div><div class="envaddr" id="envaddr"></div><div class="envf"></div>
 <button class="seal" id="seal" aria-label="Break the wax seal"><svg viewBox="-34 -34 68 68"><defs><radialGradient id="wx" cx=".38" cy=".32" r=".8"><stop offset="0" stop-color="#d23a3f"/><stop offset=".55" stop-color="#9c1820"/><stop offset="1" stop-color="#5a0a10"/></radialGradient><clipPath id="sL"><path d="M-40 -40H2L-3 -8L4 6L-1 40H-40Z"/></clipPath><clipPath id="sR"><path d="M40 -40H2L-3 -8L4 6L-1 40H40Z"/></clipPath><g id="wxs"><path d="M0 -30C9 -31 14 -25 21 -22C29 -18 31 -10 30 -2C32 7 27 13 23 20C17 27 9 31 0 30C-9 32 -16 27 -22 22C-29 16 -31 8 -30 -1C-32 -10 -27 -17 -21 -23C-15 -28 -8 -31 0 -30Z" fill="url(#wx)"/><circle r="19" fill="none" stroke="#5e0c12" stroke-width="1.6" opacity=".7"/><circle r="17" fill="none" stroke="#e8686c" stroke-width=".7" opacity=".45"/><g transform="translate(0 2)"><path d="M-12 6Q0 9 12 6Q10 3 6 2Q3 -3 1 -12Q-1 -6 -2 -4Q-4 -5 -5 -8Q-6 -2 -6 2Q-10 3 -12 6Z" fill="#6d0e15" transform="translate(.7 .9)"/><path d="M-12 6Q0 9 12 6Q10 3 6 2Q3 -3 1 -12Q-1 -6 -2 -4Q-4 -5 -5 -8Q-6 -2 -6 2Q-10 3 -12 6Z" fill="#c8383f"/></g><ellipse cx="-11" cy="-14" rx="6" ry="3" fill="#fff" opacity=".22" transform="rotate(-30 -11 -14)"/></g></defs><g class="sh s1" clip-path="url(#sL)"><use href="#wxs"/></g><g class="sh s2" clip-path="url(#sR)"><use href="#wxs"/></g></svg></button></div>
 <div class="ltr" id="ltr"><svg class="lcr" viewBox="-20 -20 40 40"><circle r="18" fill="none" stroke="#8a6420" stroke-width="1"/><path d="M-12 8Q0 11 12 8Q10 5 6 4Q3 -2 1 -13Q-1 -6 -2 -4Q-4 -5 -5 -9Q-6 -1 -6 4Q-10 5 -12 8Z" fill="#6b4a1e"/></svg><p class="lh">School of Witchcraft &amp; Wizardry</p><p class="ld">Dear <span class="ink" id="lnm"></span>,</p><div class="rest"><p>We are pleased to inform you that you have been accepted. Your first year begins tonight.</p><p>The Sorting Hat will be watching everything you do. Choose bravely.</p><p class="ls">Yours sincerely,<br>The Deputy Headmistress</p><button class="btn" id="ltrGo">Begin My Year</button></div></div>
-<p class="ohint">Tap the seal</p><button class="oskip" id="oskip">Skip</button></div>
+<p class="ohint">Tap to open</p><button class="btn oopen" id="oopen">Open the letter</button><button class="oskip" id="oskip">Skip</button></div>
 <div class="ov" id="cr"><svg class="room" id="crs" viewBox="0 -200 800 1200" preserveAspectRatio="xMidYMax slice"></svg><div class="crtx"><p class="crk">Your Common Room</p><p class="crh" id="crh"></p><p class="crp" id="crp"></p></div><button class="btn ghost crb" id="crx">Back</button></div>
 <div class="ov" id="shv"><button class="x" id="shx" aria-label="Close">×</button><canvas id="shc2" width="720" height="900"></canvas><div class="st" id="shst"></div><div class="row"><button class="btn" id="shV" disabled>Share Video</button><button class="btn ghost" id="shI">Share Image</button></div></div>
 
@@ -704,7 +712,7 @@ let name='',qi=0,sc=[0,0,0,0],picks=[],cur=null,timerId=null;
 const pb=$('#pb'),pf=$('#pf');
 function prog(){const p=qi/Q.length*100;pb.style.width=p+'%';pf.style.left=p+'%'}
 
-$('#begin').onclick=()=>{if(!on)setOn(true);$('#sndHint').classList.add('gone');show('nameS');setTimeout(()=>$('#nm').focus(),700);tick()};
+$('#begin').onclick=()=>{try{if(!on)setOn(true)}catch(e){}$('#sndHint').classList.add('gone');show('nameS');setTimeout(()=>$('#nm').focus(),700);tick()};
 const nm=$('#nm');nm.oninput=()=>{$('#nameGo').disabled=!nm.value.trim()};
 nm.onkeydown=e=>{if(e.key==='Enter'&&nm.value.trim())$('#nameGo').click()};
 $('#nameGo').onclick=()=>{Q.forEach(x=>x._seen=0);_rg();name=nm.value.trim().replace(/\s+/g,' ');name=name.charAt(0).toUpperCase()+name.slice(1);nm.blur();qi=0;sc=[0,0,0,0];picks=[];$('#prog').classList.add('on');document.body.classList.add('inq');prog();echoReset();owlLetter(()=>{renderQ();show('quiz')});chime([660,990])};
@@ -805,7 +813,8 @@ W.__card=h=>makeCard(h===undefined?_lastH:h);
 $('#crBtn').onclick=()=>commonRoom(_lastH);
 $('#shx').onclick=()=>{cancelAnimationFrame(shRaf);$('#shv').classList.remove('on')};
 $('#shV').onclick=()=>{if(vidBlob)shareFile(vidBlob,fnb()+(vidBlob.type.includes('mp4')?'.mp4':'.webm'),vidBlob.type)};
-$('#shI').onclick=async()=>{const b=await makeCard(_lastH);if(b)shareFile(b,fnb()+'.png','image/png')};
+let _cbH=-1,_cbB=null;const _cbPre=()=>{if(_cbH===_lastH)return;_cbH=_lastH;_cbB=null;makeCard(_lastH).then(b=>{if(_cbH===_lastH)_cbB=b}).catch(()=>{})};new MutationObserver(()=>{if($('#reveal').classList.contains('on'))setTimeout(_cbPre,1500)}).observe($('#reveal'),{attributes:true,attributeFilter:['class']});
+$('#shI').onclick=async()=>{if(_cbB&&_cbH===_lastH){shareFile(_cbB,fnb()+'.png','image/png');return}const b=await makeCard(_lastH);if(b)shareFile(b,fnb()+'.png','image/png')};
 $('#share').onclick=()=>shareSheet();
 const _oldShare=async()=>{let blob=null;try{blob=await makeCard(_lastH)}catch(e){}
  const fn=`sorted-${name.split(' ')[0].replace(/[^A-Za-z]/g,'')||'card'}-${H[_lastH].n}.png`.toLowerCase();
@@ -904,7 +913,10 @@ addEventListener('pointermove',e=>{if(HAT)HAT.st.tx=(e.clientX/innerWidth-.5)*1.
 function owlLetter(go){const o=$('#owl');let done=false;const fin=()=>{if(done)return;done=true;o.classList.add('away2');o.style.transition='opacity .6s';o.style.opacity='0';setTimeout(()=>{o.classList.remove('on','fly','drop','ready','open','unfold','away');o.style.opacity='';o.style.transition=''},650);document.body.classList.remove('ovon');go()};
  const n=name.replace(/[<>&"]/g,'');$('#lnm').textContent=n;$('#envaddr').innerHTML=`${n}<br><span style="font-size:.8em">The Bedroom with the Night Light</span>`;
  o.classList.add('on');document.body.classList.add('ovon');$('#oskip').onclick=fin;$('#ltrGo').onclick=()=>{sfxS('chime');fin()};
- const ready=()=>{o.classList.add('ready');$('#seal').onclick=()=>{o.classList.add('open');sfxS('snap');vib(15);setTimeout(()=>{sfxS('crinkle');o.classList.add('unfold')},650)}};
+ let opened=false,fbT=0;const sfe=k=>{try{sfxS(k)}catch(e){}};const openL=e=>{if(e&&e.preventDefault&&e.type!=='click')try{e.preventDefault()}catch(_){}if(opened||done)return;opened=true;clearTimeout(fbT);o.classList.add('ready','open');sfe('snap');try{vib(15)}catch(_){}setTimeout(()=>{sfe('crinkle');o.classList.add('unfold')},650)};
+ ['#env','#seal','#oopen'].forEach(q=>{const el=$(q);if(!el)return;el.onclick=openL;el.addEventListener('pointerup',openL);el.addEventListener('touchend',openL,{passive:false})});
+ fbT=setTimeout(()=>{if(!opened&&!done)o.classList.add('fb')},8000);
+ const ready=()=>{o.classList.add('ready')};
  if(RM){o.classList.add('drop');ready();return}
  requestAnimationFrame(()=>{o.classList.add('fly');sfxS('flap');setTimeout(()=>sfxS('hoot'),900);setTimeout(()=>{o.querySelector('.mini').style.display='none';o.classList.add('drop')},1800);setTimeout(()=>{o.classList.add('away');sfxS('flap')},2400);setTimeout(ready,3300)})}
 /* ---- wand duel ---- */
