@@ -126,6 +126,14 @@ footer{position:fixed;bottom:0;padding-bottom:calc(8px + env(safe-area-inset-bot
 .hname{background:linear-gradient(100deg,#8a6420,#fff4cf 30%,#d9b46a 50%,#fff8e0 62%,#8a6420);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent!important;animation:foil 5s linear infinite}
 h1{background-size:100% 220%;animation:foilv 6s ease-in-out infinite}
 @keyframes foil{to{background-position:-220% 0}}@keyframes foilv{50%{background-position:0 100%}}
+.cup{position:fixed;inset:0;z-index:50;background:rgba(5,4,10,.82);backdrop-filter:blur(6px);display:grid;place-items:center;opacity:0;pointer-events:none;transition:opacity .4s;padding:20px}
+.cup.on{opacity:1;pointer-events:auto}.cupin{position:relative;width:min(720px,100%);max-height:88vh;overflow:auto;border:1px solid rgba(217,180,106,.5);border-radius:18px;padding:26px 18px;background:linear-gradient(180deg,#1a1322,#120c0a)}
+.cup h2{font-family:'Cinzel Decorative',serif;text-align:center;margin:0;font-size:clamp(22px,6vw,34px);background:linear-gradient(180deg,#fff4cf,#d9b46a 60%,#8a6420);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cupsub{text-align:center;font-style:italic;opacity:.7;margin:4px 0 18px}.cupx{position:absolute;right:12px;top:8px;background:none;border:0;color:var(--gold);font-size:30px;cursor:pointer}
+.cupgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}@media(min-width:640px){.cupgrid{grid-template-columns:repeat(4,1fr)}}
+.cuph{border-radius:12px;padding:12px;border:1px solid var(--hc);background:linear-gradient(180deg,color-mix(in srgb,var(--hc) 22%,transparent),transparent)}
+.cuph b{display:block;font-family:Cinzel,serif;letter-spacing:.1em;color:var(--hc);font-size:13px}.cuph .n{font-family:'Cinzel Decorative',serif;font-size:34px;color:#fff3d6}
+.cuph span{display:inline-block;font-size:14px;margin:3px 4px 0 0;padding:2px 8px;border-radius:99px;background:rgba(255,255,255,.07)}
 @media (prefers-reduced-motion:reduce){.rays,.shn{animation:none!important;opacity:.6}*{animation-duration:.01s!important;transition-duration:.01s!important}}
 </style>
 </head>
@@ -189,7 +197,8 @@ h1{background-size:100% 220%;animation:foilv 6s ease-in-out infinite}
   <div class="traits fade" id="htraits" style="animation-delay:1.8s"></div>
   <p class="desc fade" id="hdesc" style="animation-delay:2.1s"></p>
   <div class="row fade" style="animation-delay:2.5s">
-    <button class="btn" id="share">Share the Ceremony</button>
+    <button class="btn" id="share">Share My Card</button>
+    <button class="btn ghost" id="cupBtn">House Cup</button>
     <button class="btn ghost" id="again">Sort Another</button>
   </div>
 </section>
@@ -197,6 +206,7 @@ h1{background-size:100% 220%;animation:foilv 6s ease-in-out infinite}
 <div class="toast" id="toast"></div>
 <footer>A fan-made tribute for fun · Not affiliated with or endorsed by any author, studio, or rights holder</footer>
 
+<div class="cup" id="cup" aria-hidden="true"><div class="cupin"><button class="cupx" id="cupX" aria-label="Close">×</button><h2>The Family House Cup</h2><p class="cupsub" id="cupSub">Where everyone has been sorted</p><div class="cupgrid" id="cupGrid"></div></div></div>
 <script>
 (()=>{
 const $=s=>document.querySelector(s), W=window;
@@ -310,6 +320,19 @@ sndB.onclick=e=>{e.stopPropagation();setOn(!on)};
 const _wake=()=>{if(AC&&on&&AC.state!=='running'){AC.resume();unlockIOS()}};document.addEventListener('visibilitychange',()=>{if(!document.hidden)_wake()});['pointerdown','touchend','keydown'].forEach(ev=>document.addEventListener(ev,_wake,{passive:true}));
 document.addEventListener('pointerover',e=>{if(e.pointerType==='mouse'&&e.target.closest&&e.target.closest('.btn,.opt')&&!e.target.closest('.btn,.opt').contains(e.relatedTarget))sparkle(3,.012)});
 
+/* ---------- Sorting Hat voice (pre-rendered clips, Web Speech fallback) ---------- */
+const VB={};let vbus=null;
+function vload(id){if(!AC)return Promise.resolve(null);if(VB[id])return VB[id];return VB[id]=(vload.all||(vload.all=fetch('voice.json').then(r=>{if(!r.ok)throw 0;return r.json()}))).then(j=>{const t=j[id];if(!t)throw 0;const s=atob(t.trim()),u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u.buffer}).then(b=>new Promise((res,rej)=>AC.decodeAudioData(b,res,rej))).catch(()=>null)}
+function voicePre(ids){ids.forEach(vload)}
+function bestVoice(){const vs=(W.speechSynthesis&&speechSynthesis.getVoices())||[];return vs.find(v=>/en-GB/i.test(v.lang)&&/male|daniel|arthur|george/i.test(v.name))||vs.find(v=>/en-GB/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))}
+async function say(id,txt){if(!AC||!on)return 0;let b=null;try{b=await Promise.race([vload(id),sleep(3500).then(()=>null)])}catch(e){}
+ if(b){if(!vbus){vbus=AC.createGain();vbus.gain.value=1.25;vbus.connect(master);const s=AC.createGain();s.gain.value=.12;vbus.connect(s);s.connect(W._rev)}
+  const src=AC.createBufferSource();src.buffer=b;src.connect(vbus);src.start();
+  if(tens){const n=AC.currentTime;tens.gain.cancelScheduledValues(n);tens.gain.setValueAtTime(tens.gain.value,n);tens.gain.linearRampToValueAtTime(.35,n+.2);tens.gain.setValueAtTime(.35,n+b.duration);tens.gain.linearRampToValueAtTime(1,n+b.duration+.6)}
+  duck(.08,.2);clearTimeout(say._t);say._t=setTimeout(()=>{if(tens)duck(.12,.8)},b.duration*1000);return b.duration}
+ try{if(W.speechSynthesis){const u=new SpeechSynthesisUtterance(txt.replace(/[…"]/g,' '));u.pitch=.3;u.rate=.82;const v=bestVoice();if(v)u.voice=v;speechSynthesis.cancel();speechSynthesis.speak(u);return Math.min(12,txt.length*.075)}}catch(e){}return 0}
+W.__voice={load:vload,say};
+
 /* ---------- helpers ---------- */
 function show(id){document.querySelectorAll('.scene').forEach(s=>s.classList.toggle('on',s.id===id))}
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
@@ -350,6 +373,7 @@ const I={
 /* ---------- questions: w = [G,H,R,S] ---------- */
 const Q=[
  {k:'c',q:'A sealed door hums in a forgotten corridor. Strange light leaks beneath it. You…',o:[['Throw it open. Whatever is in there should be afraid of you.',[3,0,0,1]],['Fetch your friends first. Nobody explores alone.',[1,3,0,0]],['Study the runes on the frame until you understand them.',[0,0,3,1]],['Note the location. Knowledge like this is leverage, later.',[0,0,1,3]]]},
+ {k:'c',role:1,q:'The Hat senses a family bond woven through this hall… Who are you to Sterling?',o:[['His mother',[0,0,0,0]],['His father',[0,0,0,0]],['His sister',[0,0,0,0]],['His wife',[0,0,0,0]],['His niece',[0,0,0,0]],['His nephew',[0,0,0,0]],['His son',[0,0,0,0]],['A friend, or other',[0,0,0,0]]]},
  {k:'card',q:'Four relics rest on velvet before you. Your hand drifts toward…',o:[['A jeweled sword',[3,0,0,0],I.sword],['A humble golden cup',[0,3,0,0],I.cup],['A silver diadem',[0,0,3,0],I.tiara],['An emerald locket',[0,0,0,3],I.locket]]},
  {k:'s',q:'When everyone else hesitates, how quickly do you step up?',l:['I wait to see what happens','I am already moving'],m:v=>[v/25,1.5-v/70,1-Math.abs(v-40)/60,v>55?1.2:.4],f:v=>v<25?'Patient observer':v<50?'Measured':v<75?'Ready':'Fearless'},
  {k:'c',q:'A classmate is cheating on the final exam. It does not affect your grade. You…',o:[['Confront them in front of everyone.',[3,0,0,0]],['Quietly tell them it is unfair to the others and ask them to stop.',[0,3,1,0]],['Wonder how the charm works. It is impressively clever.',[0,0,3,1]],['Say nothing. Now they owe you one.',[0,0,0,3]]]},
@@ -370,10 +394,10 @@ let name='',qi=0,sc=[0,0,0,0],picks=[],cur=null,timerId=null;
 const pb=$('#pb'),pf=$('#pf');
 function prog(){const p=qi/Q.length*100;pb.style.width=p+'%';pf.style.left=p+'%'}
 
-$('#begin').onclick=()=>{$('#sndHint').classList.add('gone');show('nameS');setTimeout(()=>$('#nm').focus(),700);tick()};
+$('#begin').onclick=()=>{if(!on)setOn(true);$('#sndHint').classList.add('gone');show('nameS');setTimeout(()=>$('#nm').focus(),700);tick()};
 const nm=$('#nm');nm.oninput=()=>{$('#nameGo').disabled=!nm.value.trim()};
 nm.onkeydown=e=>{if(e.key==='Enter'&&nm.value.trim())$('#nameGo').click()};
-$('#nameGo').onclick=()=>{name=nm.value.trim().replace(/\s+/g,' ');name=name.charAt(0).toUpperCase()+name.slice(1);nm.blur();qi=0;sc=[0,0,0,0];picks=[];$('#prog').classList.add('on');prog();renderQ();show('quiz');chime([660,990])};
+$('#nameGo').onclick=()=>{_rl=-1;name=nm.value.trim().replace(/\s+/g,' ');name=name.charAt(0).toUpperCase()+name.slice(1);nm.blur();qi=0;sc=[0,0,0,0];picks=[];$('#prog').classList.add('on');prog();renderQ();show('quiz');chime([660,990])};
 
 function letter(i){return 'ABCD'[i]}
 function renderQ(){whoosh();clearInterval(timerId);const q=Q[qi],b=$('#qbox');cur=null;
@@ -396,14 +420,17 @@ function renderQ(){whoosh();clearInterval(timerId);const q=Q[qi],b=$('#qbox');cu
 function next(){const q=Q[qi];if(cur===null)return;let w,label;
  if(q.k==='s'){w=q.m(cur);label=q.f(cur)}
  else if(q.k==='r'){w=[0,0,0,0];cur.forEach((i,r)=>q.o[i][1].forEach((v,j)=>w[j]+=v*(3-r)/3));label=q.o[cur[0]][0]}
- else{w=q.o[cur][1];label=q.o[cur][0]}
+ else{w=q.o[cur][1];label=q.o[cur][0];if(q.role)_rl=cur}
  w.forEach((v,j)=>sc[j]+=v);picks.push({q:qi,k:q.k,w,label});qi++;prog();
  if(qi<Q.length){const s=$('#quiz');s.classList.remove('on');setTimeout(()=>{renderQ();s.classList.add('on')},450)}else ceremony()}
 
 /* ---------- the hat's judgement ---------- */
 const _f=s=>{let h=0x811c9dc5;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,0x01000193)>>>0}return h.toString(36)};
-const _k={"9l4oru":2,"14phx2f":2,"15o9cyt":2,"u8x3wj":10,"l1eh1m":10,"1xiv7fx":10,"noyz19":10,"s3sa7f":10,"e4m01c":6,"1apyzos":2,"1nctokt":2,"18jiis7":3},_d={3:0,10:1,6:2,2:3};
-function judge(){const v=_k[_f('\u03c9'+name.toLowerCase().split(' ')[0].normalize('NFD').replace(/[^a-z]/g,''))];
+const _k={"14phx2f":2,"15o9cyt":2,"brin4i":2,"9l4oru":2,"sfcnc6":2,"fabneb":2,"10sswig":2,"g837zc":2,"1h3600s":2,"u8x3wj":10,"zpcgl1":10,"18sb98":10,"1mlon71":10,"1g87t2w":10,"l1eh1m":10,"1xiv7fx":10,"6zg549":10,"1nigxc2":10,"noyz19":10,"120qod6":10,"s3sa7f":10,"jq34kl":10,"a0z24j":10,"e4m01c":6,"h5wuiz":6,"2q5lg5":6,"1apyzos":2,"1nctokt":2,"1rgr7c4":2,"18jiis7":3,"yxi0mo":3},_d={3:0,10:1,6:2,2:3};
+const _nm=()=>name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''),_hk=()=>{const n=_nm(),a=_f('\u03c9'+(n.trim().split(/\s+/)[0]||'').replace(/[^a-z]/g,'')),b=_f('\u03c9'+n.replace(/[^a-z]/g,''));return _k[a]!==undefined?a:_k[b]!==undefined?b:(_rl>=0&&_rl<7?'@'+_rl:a)};const _m={"14phx2f":"f1","15o9cyt":"f1","brin4i":"f1","9l4oru":"f1","sfcnc6":"f1","fabneb":"f1","10sswig":"f1","g837zc":"f1","1h3600s":"f1","u8x3wj":"f2","zpcgl1":"f2","18sb98":"f2","1mlon71":"f2","1g87t2w":"f2","l1eh1m":"f3","1xiv7fx":"f3","6zg549":"f3","1nigxc2":"f3","noyz19":"f3","120qod6":"f3","s3sa7f":"f3","jq34kl":"f3","a0z24j":"f3","e4m01c":"f4","h5wuiz":"f4","2q5lg5":"f4","1apyzos":"f5","1nctokt":"f6","1rgr7c4":"f6","18jiis7":"f7","yxi0mo":"f7"},_F={"f1":"QWho4oCmIEkgaGF2ZSBzYXQgdXBvbiB0aGlzIGhlYWQgYmVmb3JlLCBJJ20gc3VyZSBvZiBpdC4gVGhlIGN1bm5pbmcgbWF0cmlhcmNoISBSdW5uaW5nIHRoZSB3aG9sZSBmYW1pbHkgZnJvbSB0aGUgaGVhZCBvZiB0aGUgdGFibGUsIGFuZCBldmVyeSBvbmUgb2YgdGhlbSB0aGlua3MgaXQgd2FzIHRoZWlyIG93biBpZGVhLiBPaCwgdGhlcmUgaXMgb25seSBvbmUgcGxhY2UgZm9yIHlvdS4=","f2":"U3RlYWR5IGhhbmRzLiBBIGhlYXJ0IHRoYXQgc2hvd3MgdXAgZWFybHkgYW5kIHN0YXlzIGxhdGUuIExveWFsIHRvIHRoZSBib25lLCBhbmQgaGFyZHdvcmtpbmcgd2l0aG91dCBldmVyIGJlaW5nIGFza2VkLiBJIGtub3cgZXhhY3RseSB3aGVyZSB5b3UgYmVsb25nLg==","f3":"QWho4oCmIGJpZy1zaXN0ZXIgZW5lcmd5ISBMb3lhbCwgZnVuLCBhbmQgZmllcmNlbHkgcHJvdGVjdGl2ZSBvZiBoZXIgcGVvcGxlLiBFdmVyeW9uZSdzIGZhdm9yaXRlLiBXZWxs4oCmIHRoaXMgb25lIGlzIGVhc3ku","f4":"TXksIG15LiBUaGUgYnJhaW5zIG9mIHRoZSBmYW1pbHksIGFuZCBldmVyeW9uZSBrbm93cyBpdC4gWW91IGtlZXAgdGhlIHdob2xlIGhvdXNlIHJ1bm5pbmcsIGFuZCB5b3UgYXJlIHN0aWxsIHRoZSBjbGV2ZXJlc3QgcGVyc29uIGluIHRoZSByb29tLg==","f5":"SG1t4oCmIGEgbGl0dGxlIHNjaGVtZXIhIFN3ZWV0IHNtaWxlLCBiaWcgcGxhbnMuIE9oLCBJIHNlZSB5b3UsIHlvdW5nIG9uZS4gWW91IHdpbGwgYmUgcnVubmluZyB0aGluZ3MgYmVmb3JlIGxvbmcu","f6":"T2hvISBBbm90aGVyIGxpdHRsZSBzY2hlbWVyLiBDbGV2ZXIsIGNyYWZ0eSwgYW5kIGFsd2F5cyBvbmUgc3RlcCBhaGVhZCBvZiB0aGUgZ3Jvd24tdXBzLiBPaCwgeWVzLg==","f7":"QWhoLCBhIHlvdW5nIHdhcnJpb3IhIE9ubHkgc2V2ZW4geWVhcnMgb2xkLCBhbmQgYWxyZWFkeSB0cmFpbmluZyBpbiBqaXUtaml0c3UuIEJyYXZlIGhlYXJ0LCBzdHJvbmcgZ3JpcCwgbmV2ZXIgYmFja3MgZG93bi4gVGhlcmUgaXMgbm8gcXVlc3Rpb24gYXQgYWxsLg=="},_u=b=>decodeURIComponent(escape(atob(b)));
+const _rv=[2,10,10,6,2,2,3],_rf=['f1','f2','f3','f4','f5','f6','f7'];let _rl=-1;
+W.__judge=(n,r=-1)=>{const o=[name,_rl,sc];name=n;_rl=r;sc=[0,0,0,0];const h=judge();[name,_rl,sc]=o;return H[h].n};
+function judge(){const k=_hk(),v=k[0]==='@'?_rv[+k.slice(1)]:_k[k];
  if(v!==undefined)return _d[v];let best=0;sc.forEach((s,i)=>{if(s>sc[best]+1e-9)best=i});return best}
 function lean(h){return picks.filter(p=>p.k!=='s'&&p.w[h]===Math.max(...p.w)&&p.w[h]>0)}
 function second(h){let b=-1;sc.forEach((s,i)=>{if(i!==h&&(b<0||s>sc[b]))b=i});return b}
@@ -414,30 +441,69 @@ function lines(h){const L=[],ev=lean(h),alt=second(h),hn=H[alt].n;
   1:['Loyalty… such loyalty. Rarer than gold.','You would carry a friend across a battlefield and never mention it.','Patient. Fair. Unafraid of hard work. Excellent.'],
   2:['A mind like a library with no locked doors…','You don\'t just answer questions. You question the answers.','Clever. Very clever indeed.'],
   3:['Ambition… oh, there is ambition in you.','You play the long game, and you play to win.','Resourceful. Determined. You would do well, very well.']};
- L.push(pickR([`Hmm… ${name}. Let me see now…`,`Ahh, ${name}. Sit still, now…`,`${name}… yes, yes. Let\'s have a look inside…`]));
- L.push(`Difficult. Very difficult. I see ${tease[alt]}… ${hn} could have you…`);
+ const _k2=_hk(),fk=_k2[0]==='@'?_rf[+_k2.slice(1)]:_m[_k2];
+ const oi=Math.floor(Math.random()*3);L.push({t:[`Hmm… ${name}. Let me see now…`,`Ahh, ${name}. Sit still, now…`,`${name}… yes, yes. Let\'s have a look inside…`][oi],v:'o'+oi});
+ L.push({t:`Difficult. Very difficult. I see ${tease[alt]}… ${hn} could have you…`,v:'t'+alt});
+ if(fk){L.push({t:_u(_F[fk]),v:fk});L.push({t:'I know.',v:'k'});return L}
  const q=ev.filter(p=>p.k!=='r'),e1=q.length?pickR(q):null;
- L.push(want[h][0]);
- if(e1)L.push(`"${e1.label.replace(/[.…]$/,'')}". You said it without hesitation. That tells me a great deal.`);else L.push(want[h][1]);
- const r=picks.find(p=>p.k==='r');if(r&&ev.includes(r))L.push(`And you placed ${r.label.toLowerCase()} above all else. Telling…`);else L.push(want[h][2]);
- L.push('But where to put you…');L.push('I know.');return L}
-async function type(el,txt){const hw=$('#hatwrap');hw.classList.add('talking');el.innerHTML='';const sp=document.createElement('span'),cu=document.createElement('i');cu.className='cur';el.append(sp,cu);
- for(const ch of txt){sp.textContent+=ch;if(on&&ch!==' '&&Math.random()<.3)murmur();await sleep(ch===','||ch==='.'||ch==='…'?160:34)}hw.classList.remove('talking')}
-async function ceremony(){$('#prog').classList.remove('on');const h=judge();show('hatS');rumble();smoke=!RM;await sleep(1100);const sp=$('#speech');
- for(const l of lines(h)){await type(sp,l);await sleep(l==='I know.'?900:1300)}
+ L.push({t:want[h][0],v:'w'+h+'0'});
+ if(e1)L.push({t:`"${e1.label.replace(/[.…]$/,'')}". You said it without hesitation. That tells me a great deal.`,v:'e'});else L.push({t:want[h][1],v:'w'+h+'1'});
+ const r=picks.find(p=>p.k==='r');if(r&&ev.includes(r))L.push({t:`And you placed ${r.label.toLowerCase()} above all else. Telling…`,v:'r'});else L.push({t:want[h][2],v:'w'+h+'2'});
+ L.push({t:'But where to put you…',v:'b'});L.push({t:'I know.',v:'k'});return L}
+async function type(el,txt,dur){const cd=dur?Math.max(14,Math.min(70,dur*900/txt.length)):0;const hw=$('#hatwrap');hw.classList.add('talking');el.innerHTML='';const sp=document.createElement('span'),cu=document.createElement('i');cu.className='cur';el.append(sp,cu);
+ for(const ch of txt){sp.textContent+=ch;if(!dur&&on&&ch!==' '&&Math.random()<.3)murmur();await sleep(cd?cd:(ch===','||ch==='.'||ch==='…'?160:34))}hw.classList.remove('talking')}
+async function ceremony(){$('#prog').classList.remove('on');const h=judge();show('hatS');rumble();smoke=!RM;const LS=lines(h);if(on)voicePre([...LS.map(l=>l.v),'s'+h]);await sleep(1100);const sp=$('#speech');
+ for(const l of LS){const d=await say(l.v,l.t);const t0=performance.now();await type(sp,l.t,d);const rest=d?d*1000-(performance.now()-t0):0;await sleep(Math.max(rest,0)+(l.v==='k'?700:d?500:1300))}
  sp.innerHTML='';const big=document.createElement('div');big.style.cssText='font-family:Cinzel Decorative,serif;font-style:normal;font-size:clamp(34px,10vw,64px);color:'+H[h].c+';text-shadow:0 0 30px '+H[h].c;big.textContent=H[h].n.toUpperCase()+'!';sp.append(big);
- vib([60,40,120]);smoke=false;await sleep(900);reveal(h)}
+ const sd=await say('s'+h,H[h].n+'!');vib([60,40,120]);smoke=false;await sleep(Math.max(900,sd*1000));reveal(h)}
 function reveal(h){const x=H[h];document.documentElement.style.setProperty('--acc',x.c);
  $('#crest').innerHTML=crestSVG(x)+'<defs><linearGradient id="shg" x1="0" x2="1"><stop offset=".35" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset=".65" stop-color="#fff" stop-opacity="0"/></linearGradient><clipPath id="shc"><path d="M20 20 H180 V120 Q180 200 100 232 Q20 200 20 120Z"/></clipPath></defs><g clip-path="url(#shc)" style="mix-blend-mode:soft-light"><rect class="shn" x="-200" y="0" width="200" height="240" fill="url(#shg)"/></g>';$('#hname').textContent=x.n;$('#hmotto').textContent=`${name}, ${x.motto.charAt(0).toLowerCase()+x.motto.slice(1)}.`;
  $('#htraits').innerHTML=x.t.map(t=>`<span>${t}</span>`).join('');$('#hdesc').textContent=x.d;
- const f=$('#flash');f.classList.remove('go');void f.offsetWidth;f.classList.add('go');show('reveal');fanfare(h);
+ const f=$('#flash');f.classList.remove('go');void f.offsetWidth;f.classList.add('go');show('reveal');fanfare(h);vib([90,60,90,60,260]);cupRecord(h);_lastH=h;
  setTimeout(()=>{burst(x.cols,RM?60:260);burst(x.cols,120,SW*.2,SH*.5);burst(x.cols,120,SW*.8,SH*.5);rain=x.cols},350);setTimeout(()=>rain=null,9000)}
 
 /* ---------- share ---------- */
 const url=location.origin+location.pathname;
-$('#share').onclick=async()=>{const d={title:'The Sorting Ceremony',text:'The Hat has spoken. Find out which house claims you:',url};
- if(navigator.share){try{await navigator.share(d);return}catch(e){if(e.name==='AbortError')return}}
+let _lastH=0;
+function loadImg(src){return new Promise((r,j)=>{const i=new Image();i.onload=()=>r(i);i.onerror=j;i.src=src})}
+async function makeCard(h){const x=H[h],c=document.createElement('canvas');c.width=1080;c.height=1350;const g=c.getContext('2d');
+ try{await Promise.all(["700 90px 'Cinzel Decorative'","600 40px Cinzel","italic 44px 'IM Fell English'"].map(f=>document.fonts.load(f)))}catch(e){}
+ let bg=g.createLinearGradient(0,0,0,1350);bg.addColorStop(0,'#0b0916');bg.addColorStop(.6,'#160f1f');bg.addColorStop(1,'#1d140c');g.fillStyle=bg;g.fillRect(0,0,1080,1350);
+ let rg=g.createRadialGradient(540,470,40,540,470,700);rg.addColorStop(0,x.c+'66');rg.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=rg;g.fillRect(0,0,1080,1350);
+ g.save();g.translate(540,470);g.globalAlpha=.16;g.fillStyle=x.c;for(let i=0;i<24;i++){g.rotate(Math.PI/12);g.beginPath();g.moveTo(0,0);g.lineTo(-40,-760);g.lineTo(40,-760);g.fill()}g.restore();g.globalAlpha=1;
+ for(let i=0;i<140;i++){g.fillStyle=i%3?'rgba(255,248,224,.6)':x.cols[i%x.cols.length];g.beginPath();g.arc(Math.random()*1080,Math.random()*1350,Math.random()*2.4,0,6.28);g.fill()}
+ g.strokeStyle='rgba(217,180,106,.7)';g.lineWidth=3;g.strokeRect(36,36,1008,1278);g.lineWidth=1;g.strokeRect(50,50,980,1250);
+ try{const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="400" height="480">${crestSVG(x)}</svg>`;const im=await loadImg('data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg));g.shadowColor=x.c;g.shadowBlur=60;g.drawImage(im,340,190,400,480);g.shadowBlur=0}catch(e){}
+ g.textAlign='center';g.fillStyle='#e9dcc0';g.font="italic 44px 'IM Fell English',serif";g.fillText('The Sorting Hat has spoken',540,140);
+ g.font="600 64px Cinzel,serif";g.fillStyle='#fff3d6';g.fillText(name,540,780);
+ let fg=g.createLinearGradient(0,820,0,940);fg.addColorStop(0,'#fff4cf');fg.addColorStop(.55,x.c);fg.addColorStop(1,'#8a6420');g.fillStyle=fg;g.font="700 112px 'Cinzel Decorative',serif";g.shadowColor=x.c;g.shadowBlur=30;g.fillText(x.n.toUpperCase(),540,925,980);g.shadowBlur=0;
+ g.fillStyle='#e9dcc0';g.font="italic 44px 'IM Fell English',serif";const m=`"${x.motto}."`;g.fillText(m,540,1010,960);
+ g.font="600 30px Cinzel,serif";g.fillStyle=x.c;g.fillText(x.t.join('  ·  ').toUpperCase(),540,1080,960);
+ g.fillStyle='rgba(233,220,192,.85)';g.font="italic 38px 'IM Fell English',serif";g.fillText('Which house will claim you?',540,1190);
+ g.fillStyle='#d9b46a';g.font="600 32px Cinzel,serif";g.fillText(url.replace(/^https?:\/\//,'').replace(/\/$/,''),540,1250);
+ return new Promise(r=>c.toBlob(r,'image/png'))}
+W.__card=h=>makeCard(h===undefined?_lastH:h);
+$('#share').onclick=async()=>{let blob=null;try{blob=await makeCard(_lastH)}catch(e){}
+ const fn=`sorted-${name.split(' ')[0].replace(/[^A-Za-z]/g,'')||'card'}-${H[_lastH].n}.png`.toLowerCase();
+ if(blob&&navigator.canShare){const f=new File([blob],fn,{type:'image/png'});const d={files:[f],title:'The Sorting Ceremony',text:`I was sorted into ${H[_lastH].n}! Find out yours: ${url}`};
+  try{if(navigator.canShare(d)){await navigator.share(d);return}}catch(e){if(e.name==='AbortError')return}}
+ if(blob){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fn;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);toast('Card saved. Share it with the family!');return}
  try{await navigator.clipboard.writeText(url);toast('Link copied. Send it to someone brave.')}catch(e){prompt('Copy this link:',url)}};
+/* ---------- Family House Cup ---------- */
+const CUP='https://api.restful-api.dev/objects/ff808181a09d98f701a18a6528b75a36',CUPN='house-cup';
+const cleanName=n=>{const f=(n||'').trim().split(/\s+/)[0].normalize('NFD').replace(/[^A-Za-z'-]/g,'').slice(0,16);return f?f.charAt(0).toUpperCase()+f.slice(1).toLowerCase():''};
+function cupLocal(){try{return JSON.parse(localStorage.getItem('houseCup')||'[]')}catch(e){return[]}}
+function merge(a,b){const m=new Map();[...a,...b].forEach(e=>{if(!e||!e.n||!(e.h>=0&&e.h<4))return;const k=e.n.toLowerCase(),o=m.get(k);if(!o||(e.t||0)>=(o.t||0))m.set(k,{n:cleanName(e.n),h:e.h|0,t:e.t||0})});return [...m.values()].slice(-200)}
+async function cupFetch(){const r=await fetch(CUP,{cache:'no-store'});if(!r.ok)throw 0;const j=await r.json();return (j.data&&j.data.e)||[]}
+let cupShared=null,cupState='';
+async function cupRecord(h){const n=cleanName(name);if(!n)return;const e={n,h,t:Date.now()};const loc=merge(cupLocal(),[e]);try{localStorage.setItem('houseCup',JSON.stringify(loc))}catch(x){}
+ try{const cur=await cupFetch();const all=merge(cur,[e]);const r=await fetch(CUP,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:CUPN,data:{e:all}})});if(!r.ok)throw 0;cupShared=all;cupState='shared'}catch(x){cupState='local'}}
+async function cupShow(){const g=$('#cupGrid');g.innerHTML='<p style="grid-column:1/-1;text-align:center;opacity:.7">Counting points…</p>';$('#cup').classList.add('on');
+ let list=null;try{list=merge(await cupFetch(),[]);$('#cupSub').textContent='Where everyone has been sorted'}catch(e){list=cupLocal();$('#cupSub').textContent='Sorted on this device (shared board unreachable)'}
+ const by=[0,1,2,3].map(i=>list.filter(e=>e.h===i));const order=[0,1,2,3].sort((a,b)=>by[b].length-by[a].length);
+ g.innerHTML=order.map(i=>`<div class="cuph" style="--hc:${H[i].c}"><b>${H[i].n.toUpperCase()}</b><div class="n">${by[i].length}</div>${by[i].map(e=>`<span>${e.n.replace(/[<>&"]/g,'')}</span>`).join('')}</div>`).join('')}
+$('#cupBtn').onclick=cupShow;$('#cupX').onclick=()=>$('#cup').classList.remove('on');$('#cup').onclick=e=>{if(e.target.id==='cup')$('#cup').classList.remove('on')};
+W.__cup={get state(){return cupState},show:cupShow,fetch:cupFetch};
 $('#again').onclick=()=>{rain=null;parts=[];nm.value='';$('#nameGo').disabled=true;document.documentElement.style.setProperty('--acc','#d9b46a');show('nameS');setTimeout(()=>nm.focus(),700)};
 })();
 </script>
