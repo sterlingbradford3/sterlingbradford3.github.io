@@ -301,7 +301,7 @@ body.inq footer{opacity:0;transition:opacity .6s}
 #wnd{background:#07050a;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;overscroll-behavior:none;transition:opacity .6s}#wnd.out{opacity:0}
 #wnd .wbg{position:absolute;inset:-4%;background:#100a08 center 30%/cover no-repeat;transform:scale(1.04);animation:wkb 40s ease-in-out infinite alternate;filter:brightness(.82) saturate(1.05);transition:filter 2s}
 @keyframes wkb{to{transform:scale(1.1) translate(-1%,-1%)}}
-#wnd.gold .wbg{filter:brightness(1.25) saturate(1.2) sepia(.25)}#wnd.wind .wbg{animation:wkb 40s ease-in-out infinite alternate,wwind 1.6s ease-in-out infinite}
+#wnd.gold .wbg{filter:brightness(1.08) saturate(1.05) sepia(.22)}#wnd.wind .wvig{animation:wflk 2.4s steps(1) infinite}@keyframes wflk{0%{opacity:1}12%{opacity:.86}18%{opacity:1}41%{opacity:.9}47%{opacity:1}70%{opacity:.82}74%{opacity:.95}}#wnd.wind .wbg{animation:wkb 40s ease-in-out infinite alternate,wwind 1.6s ease-in-out infinite}
 @keyframes wwind{0%,100%{translate:0 0}50%{translate:-6px 2px}}
 #wnd .wvig{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 40%,transparent 35%,rgba(0,0,0,.7)),linear-gradient(180deg,rgba(0,0,0,.55),transparent 22%,transparent 60%,rgba(0,0,0,.6));pointer-events:none}
 #wcv{position:absolute;inset:0;width:100%;height:100%;touch-action:none;z-index:3}
@@ -375,6 +375,35 @@ body:has(#reveal.on) footer{opacity:0!important;pointer-events:none}
 #wtag i{display:block;font-family:'IM Fell English',serif;font-size:13.5px;line-height:1.3;color:#5a3a1c;margin-top:3px}
 #wff .wfm{display:block;margin-top:.45em;font-size:.82em;opacity:.82;font-style:italic}
 @media (prefers-reduced-motion:reduce){.wb.hum,.wb.hum:before,.wb.nope{animation:none}}
+/* pt209u: clear draw zone */
+#wvase{right:auto;left:2%;top:calc(6px + env(safe-area-inset-top));width:min(10vw,48px);opacity:.9}
+#wnd.test #wbox{visibility:hidden;pointer-events:none}
+#wnd.drawing #wtag{padding:6px 14px 7px;top:calc(118px + env(safe-area-inset-top));width:min(80vw,380px)}
+#wnd.drawing #wtag .tp,#wnd.drawing #wtag i{display:none}
+#wnd.drawing #wtag b{font-size:13px;display:inline}#wnd.drawing #wtag .ts{font-size:12px;display:block;line-height:1.2}
+#wnd.drawing #whand{z-index:2}
+#wnd.drawing #whand.on:not(.kick):not(.up):not(.back):not(.droop){transform:rotate(var(--aim,-14deg)) translateY(8vh);transition:transform .22s cubic-bezier(.2,.8,.3,1),opacity .3s}
+#wnd.drawing.pen #whand.on{opacity:.55}
+#wnd.drawing #wcap{visibility:hidden}
+/* box states */
+.wb.tried{filter:drop-shadow(0 12px 16px rgba(0,0,0,.65)) brightness(.55) saturate(.6)!important}
+.wb.tried:after{content:'Tried';position:absolute;right:6%;top:50%;transform:translateY(-50%) rotate(-8deg);font:700 13px Cinzel,serif;letter-spacing:.2em;text-transform:uppercase;color:#f3dcae;border:1.5px solid rgba(243,220,174,.7);padding:3px 9px;border-radius:3px;background:rgba(30,16,8,.55)}
+.wb.sug{filter:drop-shadow(0 0 14px rgba(255,214,140,.7)) drop-shadow(0 12px 16px rgba(0,0,0,.6))}
+.wb.sug:before{content:'✦ Mr. Quill suggests';position:absolute;left:50%;top:-4px;transform:translate(-50%,-100%);font:600 11px Cinzel,serif;letter-spacing:.16em;text-transform:uppercase;color:#ffd98a;text-shadow:0 1px 6px #000;white-space:nowrap;z-index:2}
+/* Mr. Quill's questions */
+#wiv{position:absolute;left:50%;top:50%;transform:translate(-50%,-46%);width:min(90vw,440px);z-index:7;text-align:center;padding:22px 20px 18px;border-radius:12px;background:linear-gradient(180deg,rgba(246,234,206,.97),rgba(226,208,170,.97));color:#2c1a0c;box-shadow:0 20px 50px rgba(0,0,0,.7),inset 0 0 0 1px rgba(120,80,30,.35),inset 0 0 0 6px rgba(246,234,206,.9),inset 0 0 0 7px rgba(150,105,45,.45);opacity:0;pointer-events:none;transition:opacity .5s,transform .6s cubic-bezier(.2,.9,.3,1.1)}
+#wiv.on{opacity:1;transform:translate(-50%,-50%);pointer-events:auto}
+#wiv .wiw{margin:0 0 8px;font:600 11px Cinzel,serif;letter-spacing:.22em;text-transform:uppercase;color:#7a5424}
+#wivq{margin:0 0 14px;font-family:'IM Fell English','IM FELL French Canon',serif;font-style:italic;font-size:clamp(19px,5.2vw,23px);line-height:1.25;min-height:2.5em}
+#wiva{display:flex;flex-direction:column;gap:9px}
+#wiva .wia{width:100%;margin:0;font-size:16px;opacity:0;transform:translateY(8px)}
+#wiv.qin .wia{animation:wia .45s var(--d) forwards}@keyframes wia{to{opacity:1;transform:none}}
+#wiva .wia.sel{box-shadow:0 0 0 2px #ffd27a,0 0 18px rgba(255,210,122,.8)}
+#wiva .wia:disabled:not(.sel){opacity:.4!important}
+#wnd:has(#wiv.on) #wbox{opacity:0}
+@media (prefers-reduced-motion:reduce){#wiv,#wiv.on{transition:none}#wiv.qin .wia{animation:none;opacity:1;transform:none}#wnd.drawing #whand.on{transition:none}}
+@media (prefers-reduced-motion:reduce){#wnd.wind .wvig{animation:none}}
+#wnd:has(#wiv.on) #wcap{visibility:hidden}
 #mck{z-index:60;display:none;align-items:center;justify-content:flex-start;padding:calc(24px + env(safe-area-inset-top)) 22px calc(24px + env(safe-area-inset-bottom));overflow:auto}
 #mck.on{display:flex;animation:mckin .6s ease both}#mck.out{animation:mckout .5s ease both}
 @keyframes mckin{from{opacity:0}}@keyframes mckout{to{opacity:0}}
@@ -540,6 +569,7 @@ body:has(#reveal.on) footer{opacity:0!important;pointer-events:none}
 <p id="wcap" aria-live="polite"></p>
 <div id="wtag" aria-live="polite"></div>
 <div id="wbox"></div>
+<div id="wiv" role="dialog" aria-label="Mr. Quill asks"><p class="wiw">Mr. Thaddeus Quill · Wandkeeper</p><p id="wivq"></p><div id="wiva"></div></div>
 <div id="whand"><img alt="" draggable="false"><i></i></div>
 <div id="wpr"><div class="cc" id="wcc" aria-live="polite"></div><div id="wtm"></div><p></p><p id="wheard"></p></div>
 <div id="wint"><p class="wk">Diagon Alley</p><h2>The Wand Shop</h2><p class="wtx"></p><div class="spic"><span>📦 Pick</span><span>✦ Trace</span><span>“Say it!”</span></div><button class="btn" id="wgo">Enter the shop</button><p class="spsm">The wand chooses the wizard. It may take a few tries.</p></div>
@@ -1240,7 +1270,10 @@ const SPELLS={
  herbivicus:{n:'Herbivicus',say:'herbivicus',alias:['herbi vicus','herb vicious','herbivorous','herbie vicus','herbal vicus','herb ivy cuss','herbivore'],shape:'heart',hint:'Draw a heart to make it grow.',col:['#f2ffd8','#8fdc5a']},
  alohomora:{n:'Alohomora',say:'alohomora',alias:['aloha mora','aloha more a','aloha more','alo homora','aloha mara','aloe homora','aloha'],shape:'tri',hint:'Draw the triangle of wisdom: top, right, left, top.',col:['#e2f0ff','#6aa6ff']},
  serpensortia:{n:'Serpensortia',say:'serpensortia',alias:['serpent sortia','serpents ortia','serpent sort','serpent','serpensorta','serpens sortia'],shape:'snake',hint:'Draw a slithering S, top to bottom.',col:['#e6fff0','#4fd18b']},
- expelliarmus:{n:'Expelliarmus',say:'expelliarmus',alias:['expelli armus','expel armus','expelliarmus','expel arms','expelli','expelleramus','x pelly armus','expel your mess','spelly armus'],shape:'bolt',hint:'Draw a lightning bolt, top to bottom.',col:['#fff0e0','#ff6a4e']}};
+ expelliarmus:{n:'Expelliarmus',say:'expelliarmus',alias:['expelli armus','expel armus','expelliarmus','expel arms','expelli','expelleramus','x pelly armus','expel your mess','spelly armus'],shape:'bolt',hint:'Draw a lightning bolt, top to bottom.',col:['#fff0e0','#ff6a4e']},
+ wingardium:{n:'Wingardium Leviosa',say:'wingardium leviosa',alias:['wingardium','leviosa','levi osa','win gardium','wingardium leviosar','wing guardian leviosa','wing ardium','leviosa','levy osa','wingardium levi'],shape:'dome',hint:'Swish and flick: one smooth arc over the top, left to right.',col:['#f4f0ff','#b9a6ff']},
+ incendio:{n:'Incendio',say:'incendio',alias:['in sendio','in cendio','incend io','in send io','insendio','incendia','in send yo','incendo'],shape:'snake',hint:'Draw a curling flame: an S, top to bottom.',col:['#fff1d0','#ff8a2a']},
+ stupefy:{n:'Stupefy',say:'stupefy',alias:['stupify','stoopify','stupe fy','stupefied','stew pefy','stupid fi','stupe five','stupefy'],shape:'tri',hint:'Draw a stunning wedge: top, right, left, back to top.',col:['#ffe4e4','#ff4e5e']}};
 const TASK=[
  {sp:'protego',t:'Incoming hex!',d:'The duelling dummy attacks. Shield yourself!'},
  {sp:'herbivicus',t:'A wilting sprout',d:'This little plant needs your kindness. Help it grow!'},
@@ -1406,7 +1439,15 @@ function duel(go){duelDone=true;
 
 /* ---------- Ollivanders: the wand chooses the wizard ---------- */
 const WANDS=[{"wood":"Holly","core":"Phoenix feather","len":"11″","fl":"brave and loyal","flex":"pleasantly supple","maker":"Aldous Fenwick & Daughters","place":"Bristol · est. 1781","lore":"Cut at midwinter, when holly is said to be at its bravest.","h":330,"bw":0.94},{"wood":"Willow","core":"Unicorn hair","len":"10¾″","fl":"gentle and steady","flex":"swishy","maker":"Mirabel Thorne","place":"Hogsmeade","lore":"Riverbank willow, wrapped in linen to keep it calm on the journey.","h":300,"bw":0.86},{"wood":"Cedar","core":"Owl feather","len":"12″","fl":"clever and mysterious","flex":"unyielding","maker":"Corvin Ashgrove","place":"Edinburgh · Old Town","lore":"Smells faintly of pencil shavings and very old libraries.","h":290,"bw":0.84},{"wood":"Blackthorn","core":"Dragon heartstring","len":"13″","fl":"powerful and proud","flex":"rigid","maker":"Vale & Mordaunt","place":"Wandwrights · London","lore":"Seasoned in a cold forge for seven winters before it would behave.","h":360,"bw":0.97},{"wood":"Ash","core":"Unicorn hair","len":"12½″","fl":"","flex":"quite bendy","maker":"Bramblewick Brothers","place":"York","lore":"This box has clearly been dropped at least twice. The wand doesn’t mind.","h":280,"bw":0.82},{"wood":"Rosewood","core":"Dragon heartstring","len":"11¼″","fl":"","flex":"surprisingly swishy","maker":"Odessa Vranck","place":"Bruges","lore":"The pale grip was carved from a single antler, shed in spring.","h":320,"bw":0.9},{"wood":"Hazel","core":"Phoenix feather","len":"10″","fl":"","flex":"whippy","maker":"Hollins of Galway","place":"Galway","lore":"Said to hum quietly whenever there is water nearby.","h":270,"bw":0.8},{"wood":"Cherry","core":"Unicorn hair","len":"12¾″","fl":"","flex":"slightly springy","maker":"Septimus Crane","place":"Cornhill · London","lore":"Sealed with plum wax and a promise to find the right hand.","h":340,"bw":0.92}];
-const WCAP={w_in:'A ladder rolls along the shelves on its own. A long, thin box drops into your hands. Go on. Give it a wave.',w_vase:'Oh dear. Not that one. That vase was very old.',w_spark:'No, no. Far too much wand for you. Try another.',w_box:'Well. That shelf needed tidying anyway.',w_next:'Hmm. Perhaps this one.',w_ok:'Warmth runs up your arm. The dust lifts, and golden light fills the shop. The wand has chosen you.',w_cur:'Curious… very curious.',w_c0:'Holly and phoenix feather. Eleven inches. Brave and loyal to its owner.',w_c1:'Willow and unicorn hair. Ten and three quarter inches. Gentle, and very steady.',w_c2:'Cedar and owl feather. Twelve inches. Clever, and a little bit mysterious.',w_c3:'Blackthorn and dragon heartstring. Thirteen inches. Powerful, and rather proud.',w_f1:'Not quite. That wand isn’t sure about you yet. Let’s try another.',w_f2:'Don’t worry. Wands can be very fussy. Pick another box.',w_f3:'Hmm. Not that one either. Nearly there, I think.',w_auto:'Oh! You don’t even need to wave it. It chose you the moment you touched it.',w_try:'Now draw the spell, then say it out loud.'};
+const WCAP={w_in:'A ladder rolls along the shelves on its own. A long, thin box drops into your hands. Go on. Give it a wave.',w_vase:'Oh dear. Not that one. That vase was very old.',w_spark:'No, no. Far too much wand for you. Try another.',w_box:'Well. That shelf needed tidying anyway.',w_next:'Hmm. Perhaps this one.',w_ok:'Warmth runs up your arm. The dust lifts, and golden light fills the shop. The wand has chosen you.',w_cur:'Curious… very curious.',w_c0:'Holly and phoenix feather. Eleven inches. Brave and loyal to its owner.',w_c1:'Willow and unicorn hair. Ten and three quarter inches. Gentle, and very steady.',w_c2:'Cedar and owl feather. Twelve inches. Clever, and a little bit mysterious.',w_c3:'Blackthorn and dragon heartstring. Thirteen inches. Powerful, and rather proud.',w_f1:'Not quite. That wand isn’t sure about you yet. Let’s try another.',w_f2:'Don’t worry. Wands can be very fussy. Pick another box.',w_f3:'Hmm. Not that one either. Nearly there, I think.',w_auto:'Oh! You don’t even need to wave it. It chose you the moment you touched it.',w_try:'Now draw the spell, then say it out loud.',
+ k_hi:'Ah. Come in, come in. I am Mr. Thaddeus Quill, keeper of this shop. Before I fetch a single box, a question or two.',
+ k_hm:'Mm. Yes. I have three in mind. Boxes, please.',
+ k_s:'Try this one first. Your answers point to it.',k_s2:'Then perhaps this one. Patience. The wand chooses.',k_t:'We have already tried that one, I think.',
+ k_dr:'Dragon heartstring. Bold, and a little fierce. Let us see a bolder spell.',k_un:'Unicorn hair. Gentle and loyal. A soft spell suits it.',k_ph:'Phoenix feather. Rare, and particular. Something in between.',k_ow:'Owl feather. Watchful, clever. A thinking spell.'};
+const KQ=[{q:'When trouble finds you, what do you reach for first?',a:[['A brave plan','Dragon heartstring'],['A kind friend','Unicorn hair'],['A clever idea','Phoenix feather']]},
+ {q:'Which would you rather hold on a dark night?',a:[['A crackling torch','Dragon heartstring'],['A quiet candle','Unicorn hair'],['A single bright feather','Phoenix feather']]}];
+const CORESP={'Dragon heartstring':['expelliarmus','incendio','stupefy'],'Unicorn hair':['lumos','wingardium','herbivicus'],'Phoenix feather':['protego','alohomora','lumos'],'Owl feather':['alohomora','protego']};
+const CORELN={'Dragon heartstring':'k_dr','Unicorn hair':'k_un','Phoenix feather':'k_ph','Owl feather':'k_ow'};
 let WJ=null,wandPick=null;
 function wandLoad(){return WJ||(WJ=fetch('wand.json').then(r=>{if(!r.ok)throw 0;return r.json()}).catch(()=>{WJ=null;return null}))}
 const WB={};
@@ -1474,9 +1515,9 @@ function wandScene(core){return new Promise(async done=>{
  /* shelf */
  const shuf=a=>{for(let i=a.length-1;i>0;i--){const k=Math.floor(Math.random()*(i+1));[a[i],a[k]]=[a[k],a[i]]}return a};
  const pick3=rt=>{const all=shuf([0,1,2,3,4,5,6,7].filter(i=>i!==core));const f=all.filter(i=>!used.has(i)).concat(all.filter(i=>used.has(i)));const o=f.slice(0,rt?2:3);if(rt)o.splice(Math.floor(Math.random()*3),0,core);return o};let hum=false;
- function shelf(){phase='shelf';ui('#wcc').classList.remove('on');d.classList.remove('test','gold');d.classList.add('shelf');hand.classList.remove('on','up');hint.textContent='Tap a box to try a wand, or flick it toward you.';heard.classList.remove('on','listen');bar.style.setProperty('--p',0);
-  const bx=ui('#wbox');bx.innerHTML='';hum=tries>=K;const ids=pick3(hum);bx.classList.toggle('humr',hum);if(hum){hint.textContent='One of these boxes is humming softly. Tap it, or flick it toward you.';try{S.hum()}catch(e){}}
-  for(let i=0;i<3;i++){const id=ids[i],k=WANDS[id],b=document.createElement('button');b.className='wb'+(hum&&id===core?' hum':'');b.dataset.w=id;b.setAttribute('aria-label',`Box ${i+1}: ${k.maker}, ${k.place.split(' · ')[0]}. ${k.wood}, ${k.core.toLowerCase()}, ${k.len}`);b.style.setProperty('--bw',k.bw);b.style.setProperty('--ar',1400/k.h);
+ function shelf(){phase='shelf';ui('#wcc').classList.remove('on');d.classList.remove('test','gold');d.classList.add('shelf');hand.classList.remove('on','up');hint.textContent='Mr. Quill nods at the glowing box. Tap a box to try it, or flick it toward you.';heard.classList.remove('on','listen');bar.style.setProperty('--p',0);
+  const bx=ui('#wbox');bx.innerHTML='';hum=tries>=K;const ids=trio;bx.classList.toggle('humr',hum);if(!hum&&tries>0)setTimeout(()=>{if(phase==='shelf')line('k_s2')},400);else if(!hum)setTimeout(()=>{if(phase==='shelf')line('k_s')},2600);if(hum){hint.textContent='One of these boxes is humming softly. Tap it, or flick it toward you.';try{S.hum()}catch(e){}}
+  for(let i=0;i<3;i++){const id=ids[i],k=WANDS[id],b=document.createElement('button');const sg=!hum&&sugQ.find(x=>!used.has(x));b.className='wb'+(hum&&id===core?' hum':'')+(used.has(id)?' tried':'')+(sg===id?' sug':'');b.dataset.w=id;b.setAttribute('aria-label',`Box ${i+1}: ${k.maker}, ${k.place.split(' · ')[0]}. ${k.wood}, ${k.core.toLowerCase()}, ${k.len}`);b.style.setProperty('--bw',k.bw);b.style.setProperty('--ar',1400/k.h);
    const lid=Math.floor(Math.random()*4);b.style.setProperty('--r',(Math.random()*3-1.5).toFixed(2)+'deg');b.style.setProperty('--d',(i*.12+.05)+'s');
    b.innerHTML=`<img class="wbb" src="${IM['bb'+id]}" alt=""><img class="wbl" src="${IM['bx'+id]}" alt="">`;bx.appendChild(b);
    let y0=null,x0=0,t0=0;
@@ -1486,34 +1527,38 @@ function wandScene(core){return new Promise(async done=>{
    b.onclick=()=>choose(b,'tap')}}
  async function choose(b,how){if(phase!=='shelf')return;const bw=+b.dataset.w;
   if(hum&&bw!==core){b.classList.remove('nope');void b.offsetWidth;b.classList.add('nope');vib([8,30,8]);try{S.pop()}catch(e){}hint.textContent=['That lid won’t budge. Something else is calling you.','Stuck fast. Listen for the humming box.'][(b._n=(b._n||0)+1)%2];return}
+  if(used.has(bw)){b.classList.remove('nope');void b.offsetWidth;b.classList.add('nope');vib(8);line('k_t');return}
   phase='open';tries++;curW=bw;right=curW===core;const auto=false;used.add(curW);
   ui('#wbox').querySelectorAll('.wb').forEach(x=>{if(x!==b)x.classList.add('away')});
   b.classList.add('pick',how);S.open();vib(10);await sleep(RMm?150:520);b.classList.add('lidoff');S.pick();
   handImg.src=IM['w'+curW];hand.className='';void hand.offsetWidth;hand.classList.add('on');const r=b.getBoundingClientRect();spark(r.left+r.width/2,r.top+r.height/2,30,['#ffe9b0','#fff'],4);
   await sleep(RMm?200:650);b.classList.add('gone');d.classList.remove('shelf');d.classList.add('test');tag(curW);
   if(auto){await line('w_auto');return chosen()}
-  if(tries>1&&!right&&Math.random()<.6)await line('w_next');else if(tries===1)await line('w_try');
-  const ks=Object.keys(SPELLS).filter(k=>SHP[SPELLS[k].shape]);const nsp=right?1:1+(Math.random()<.4?1:0);spells=[];while(spells.length<nsp){const k=ks[Math.floor(Math.random()*ks.length)];if(!spells.includes(k))spells.push(k)}
+  await line(CORELN[WANDS[curW].core]||'w_next');if(tries===1)await line('w_try');
+  const ks=shuf((CORESP[WANDS[curW].core]||['lumos']).slice());const nsp=right?1:1+(Math.random()<.4?1:0);spells=[];while(spells.length<nsp){const k=ks[Math.floor(Math.random()*ks.length)];if(!spells.includes(k))spells.push(k)}
   si=0;step()}
  function tag(id){const k=WANDS[id],e=ui('#wtag');e.innerHTML=`<b>${k.maker}</b><span class="tp">${k.place}</span><span class="ts">${k.wood} · ${k.core} · ${k.len} · ${k.flex}</span><i>${k.lore}</i>`;e.classList.remove('on');void e.offsetWidth;e.classList.add('on')}
- function step(){phase='show';trail=null;heardQ=0;heardC=0;heardTx='';ui('#wcc').classList.remove('on');stepT=T();const s=sp();
+ function step(){phase='show';d.classList.add('drawing');ZN=null;requestAnimationFrame(()=>zone());trail=null;heardQ=0;heardC=0;heardTx='';ui('#wcc').classList.remove('on');stepT=T();const s=sp();
   ui('.wspn').textContent=(spells.length>1?`Spell ${si+1} of ${spells.length}: `:'')+s.n;ui('.wspn').style.setProperty('--sc',s.col[1]);
   hint.textContent=s.hint+(micOff?'':` Then say “${s.n}!”`);heard.classList.remove('listen');if(!micOff)heard.classList.remove('on');
-  setTimeout(()=>{if(phase==='show'){phase='draw';stepT=T()}},RMm?150:700)}
- const GC=()=>({x:w*.5,y:h*.44}),GS=()=>Math.min(w*.3,h*.17,170);
+  setTimeout(()=>{if(phase==='show'){zone();phase='draw';stepT=T()}},RMm?150:si===0?1500:700)}
+ let ZN=null;
+ function zone(){const tb=Math.max(ui('.wspn').getBoundingClientRect().bottom,ui('#wtag').getBoundingClientRect().bottom)+18;const hp=ui('#wpr > p:not(#wheard)').getBoundingClientRect();const vh=(W.visualViewport&&visualViewport.height)||h;
+  const bb=Math.min(hp.top>0?hp.top:h,vh)-56;const s=Math.max(60,Math.min(w*.32,(bb-tb)/2*.94,170));ZN={x:w*.5,y:(tb+bb)/2,s,top:tb,bot:bb};return ZN}
+ const GC=()=>ZN||zone(),GS=()=>(ZN||zone()).s;
  const guide=()=>{const c=GC(),s=GS(),shp=SHP[sp().shape];return R1.res(shp,96).map(q=>({x:c.x+q.x*s,y:c.y+q.y*s}))};
  function toSay(){phase='say';sayT=T();heardQ=0;sayIdx=finals;hint.textContent=`Now say it: “${sp().n}!”`;heard.textContent='🎙 Listening…';heard.classList.add('on','listen');S.pick()}
  function fail(why){if(phase!=='draw'&&phase!=='say')return;phase='fizz';S.fizz();vib(15);const t=tip();spark(t.x,t.y,18,'#8a8a9a',2.5);heard.classList.remove('listen');
   const s=sp(),msg=why==='word'?`Fizzle! That wasn’t “${s.n}”.`:why==='silent'?`Fizzle! The wand needs the word “${s.n}”.`:why==='time'?'The spell faded.':'Fizzle! The shape wasn’t quite right.';
   hint.textContent=msg;hand.classList.add('droop');
-  setTimeout(async()=>{await line(['w_f1','w_f2','w_f3'][(tries-1)%3]);hand.classList.remove('droop');putBack()},900)}
- function putBack(){ui('#wtag').classList.remove('on');hand.classList.add('back');setTimeout(()=>{hand.classList.remove('on','back');shelf()},RMm?100:500)}
+  setTimeout(async()=>{d.classList.remove('drawing','pen');await line(['w_f1','w_f2','w_f3'][(tries-1)%3]);hand.classList.remove('droop');putBack()},900)}
+ function putBack(){d.classList.remove('drawing','pen');ui('#wtag').classList.remove('on');hand.classList.add('back');setTimeout(()=>{hand.classList.remove('on','back');shelf()},RMm?100:500)}
  async function cast(pow){if(phase!=='draw'&&phase!=='say')return;phase='cast';heard.classList.remove('listen');const t=tip(),s=sp();
   try{castCard(ui('#wcc'),drawQ,micOff?null:heardQ,heardC,heardTx)}catch(e){}if(!right){return misfireNow()}
   spark(t.x,t.y,[30,60,100][pow>=.8?2:pow>=.5?1:0],[s.col[0],s.col[1],'#fff'],7);S.pick();try{sfxPlay('chime')}catch(e){}flash=RMm?0:.2;flashT=T();
   hint.textContent=pow>=.8?'Brilliant casting!':'It worked!';
   si++;if(si<spells.length){await sleep(2100);step()}else{await sleep(1500);ui('#wcc').classList.remove('on');chosen()}}
- async function misfireNow(){const t=tip(),k=misfire%3;misfire++;hand.classList.add('kick');setTimeout(()=>hand.classList.remove('kick'),600);
+ async function misfireNow(){d.classList.remove('pen');const t=tip(),k=misfire%3;misfire++;hand.classList.add('kick');setTimeout(()=>hand.classList.remove('kick'),600);
   if(k===0){// vase
    const v=ui('#wvase'),r=v.getBoundingClientRect();beamT={a:t,b:{x:r.left+r.width/2,y:r.top+r.height*.55},t:T(),c:'#9fd0ff'};
    await sleep(RMm?50:260);S.vase();vib([20,20,40]);v.classList.add('gone');shatter(v,r);flash=RMm?0:.25;flashT=T();if(!RMm)d.classList.add('shake');
@@ -1523,13 +1568,13 @@ function wandScene(core){return new Promise(async done=>{
   else{// boxes topple
    S.boxes();vib([20,40,20,40,20]);topple();if(!RMm)d.classList.add('shake');hint.textContent='Look out!';await line('w_box')}
   setTimeout(()=>d.classList.remove('shake'),700);putBack()}
- let beamT=null,wild=0;
+ let beamT=null,wild=0,papers=[];
  function shatter(v,r){const img=v;const N=LOW?8:16;for(let i=0;i<N;i++){const gx=i%4,gy=Math.floor(i/4)*(16/N);const cw=r.width/4,ch=r.height/(N/4);
    shards.push({img,sx:gx/4,sy:(Math.floor(i/4))/(N/4),sw:1/4,sh:1/(N/4),x:r.left+gx*cw,y:r.top+Math.floor(i/4)*ch,w:cw,h:ch,vx:(gx-1.5)*1.8+(Math.random()-.5)*3,vy:-3-Math.random()*4,r:0,vr:(Math.random()-.5)*.3,l:1})}
   spark(r.left+r.width/2,r.top+r.height/2,40,['#fff','#cfe0ff','#21408f'],6)}
  function topple(){const n=LOW?5:9;for(let i=0;i<n;i++)falls.push({img:lidImgs[(i*3)%8],x:w*(.45+Math.random()*.5),y:-60-i*55,vx:-1-Math.random()*2,vy:2,r:(Math.random()-.5),vr:(Math.random()-.5)*.15,b:0,l:1,s:.55+Math.random()*.3})}
- async function chosen(){phase='chosen';ui('#wtag').classList.remove('on');d.classList.add('gold');if(!RMm)d.classList.add('wind');hand.classList.add('up');glowT=T();S.swell();vib([40,40,80,40,160]);
-  const t=tip();spark(t.x,t.y,140,['#fff3c4','#ffd27a','#ffb84e','#fff'],9,.012);flash=RMm?0:.35;flashT=T();hint.textContent='';heard.classList.remove('on','listen');stopVoice();
+ async function chosen(){phase='chosen';d.classList.remove('drawing','pen');ui('#wtag').classList.remove('on');d.classList.add('gold');if(!RMm)d.classList.add('wind');hand.classList.add('up');glowT=T();S.swell();vib([40,40,80,40,160]);
+  const t=tip();spark(t.x,t.y,36,['#ffe2a8','#f0c27a'],4,.016);flash=RMm?0:.08;flashT=T();hint.textContent='';heard.classList.remove('on','listen');stopVoice();
   wandPick=core;await line('w_ok');await line('w_c'+core);
   const f=ui('#wfin');ui('#wfimg').src=IM['w'+core];{const k=WANDS[core],e=ui('#wfn');e.textContent=`${k.wood} & ${k.core.toLowerCase()}`;const sm=document.createElement('small');sm.textContent=k.len;e.appendChild(sm)}ui('#wff').innerHTML=`Your wand is ${WANDS[core].fl}.<span class="wfm">Made by ${WANDS[core].maker}, ${WANDS[core].place.split(' · ')[0]}. ${WANDS[core].flex.charAt(0).toUpperCase()+WANDS[core].flex.slice(1)}.</span>`;
   d.classList.add('fin');S.pick();await line('w_cur');ui('#wtake').focus({preventScroll:true})}
@@ -1537,12 +1582,13 @@ function wandScene(core){return new Promise(async done=>{
   cv.removeEventListener('pointerdown',pd);cv.removeEventListener('pointermove',pm);cv.removeEventListener('pointerup',pu);cv.removeEventListener('pointercancel',pu);
   d.classList.add('out');setTimeout(()=>{d.classList.remove('on','out','fin','gold','wind','test','shelf','intro');document.body.classList.remove('ovon');ui('#wvase').classList.remove('gone');done()},RMm?50:600)}
  ui('#wtake').onclick=()=>{tick();end()};
- ui('#wskip').onclick=()=>{if(phase==='chosen'||phase==='load')return;tok++;try{src&&src.stop()}catch(e){}d.classList.remove('intro','shelf');d.classList.add('test');if(curW!==core){curW=core;handImg.src=IM['w'+core];hand.className='on'}chosen()};
+ ui('#wskip').onclick=()=>{if(phase==='chosen'||phase==='load')return;ui('#wiv').classList.remove('on');tok++;try{src&&src.stop()}catch(e){}d.classList.remove('intro','shelf');d.classList.add('test');if(curW!==core){curW=core;handImg.src=IM['w'+core];hand.className='on'}chosen()};
  /* drawing */
  const pt=e=>{const r=cv.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}};
- const pd=e=>{if(phase!=='draw')return;e.preventDefault();try{cv.setPointerCapture(e.pointerId)}catch(_){}trail=[pt(e)];drawT0=T()};
- const pm=e=>{if(!trail||phase!=='draw')return;e.preventDefault();const p=pt(e),q=trail[trail.length-1];if(Math.hypot(p.x-q.x,p.y-q.y)>2){trail.push(p);if(Math.random()<.5)spark(p.x,p.y,1,sp().col[1],1.2)}};
- const pu=()=>{if(!trail||phase!=='draw')return;const tr=trail;trail=null;tr.done=T();lastTr=tr;if(R1.len(tr)<GS()*1.2){if(tr.length>3){tr.bad=1;fail('short')}return}
+ const aim=p=>{const ox=hand.offsetLeft+hand.offsetWidth*.08,oy=hand.offsetTop+hand.offsetHeight*.5;const a=Math.atan2(p.y-oy,p.x-ox)*180/Math.PI;hand.style.setProperty('--aim',Math.max(-52,Math.min(-6,a)).toFixed(1)+'deg')};
+ const pd=e=>{if(phase!=='draw')return;e.preventDefault();d.classList.add('pen');aim(pt(e));try{cv.setPointerCapture(e.pointerId)}catch(_){}trail=[pt(e)];drawT0=T()};
+ const pm=e=>{if(!trail||phase!=='draw')return;e.preventDefault();const p=pt(e),q=trail[trail.length-1];if(Math.hypot(p.x-q.x,p.y-q.y)>2){trail.push(p);aim(p);if(Math.random()<.5)spark(p.x,p.y,1,sp().col[1],1.2)}};
+ const pu=()=>{d.classList.remove('pen');if(!trail||phase!=='draw')return;const tr=trail;trail=null;tr.done=T();lastTr=tr;if(R1.len(tr)<GS()*1.2){if(tr.length>3){tr.bad=1;fail('short')}return}
   const r=recog(tr,sp().shape),dt=(T()-drawT0)/1000;
   if(r.ok){drawQ=Math.min(1,Math.max(0,(r.s-.6)/.3))*.75+Math.max(0,Math.min(1,1-(dt-1)/4))*.25;tr.ok=1;if(micOff)cast(Math.min(1,.3+.7*drawQ));else toSay()}else{tr.bad=1;fail('shape')}};
  let lastTr=null;
@@ -1556,11 +1602,11 @@ function wandScene(core){return new Promise(async done=>{
   g.globalCompositeOperation='lighter';for(const m of motes){if(!RMm){m.y-=.00012*(1+m.z)+(gold?.0016*(1+m.z):0);m.x+=Math.sin(t*.6+m.p)*.0002+(gold&&!RMm?.0035*(1+m.z):0)}if(m.y<0)m.y=1;if(m.x>1)m.x=0;
    const a=(.25+.35*m.z)*(.6+.4*Math.sin(t*1.3+m.p));g.fillStyle=`rgba(255,${210+30*gold|0},${150+60*gold|0},${a*(.5+gold)})`;g.beginPath();g.arc(m.x*w,m.y*h,.6+m.z*1.6,0,6.28);g.fill()}
   // golden light
-  if(gold){const tp=tip(),R=Math.max(w,h)*(.2+gold*1.1),gr=g.createRadialGradient(tp.x,tp.y,0,tp.x,tp.y,R);gr.addColorStop(0,`rgba(255,240,190,${.75*gold})`);gr.addColorStop(.25,`rgba(255,200,110,${.35*gold})`);gr.addColorStop(1,'rgba(255,170,60,0)');g.fillStyle=gr;g.fillRect(0,0,w,h);
-   if(!RMm){g.save();g.translate(tp.x,tp.y);g.rotate(t*.15);for(let i=0;i<14;i++){g.rotate(Math.PI/7);const l=g.createLinearGradient(0,0,0,-R);l.addColorStop(0,`rgba(255,226,150,${.22*gold})`);l.addColorStop(1,'rgba(255,226,150,0)');g.fillStyle=l;g.beginPath();g.moveTo(0,0);g.lineTo(-R*.06,-R);g.lineTo(R*.06,-R);g.fill()}g.restore();
-    if(Math.random()<.6*FEW)P.push({x:tp.x+(Math.random()-.5)*40,y:tp.y,vx:(Math.random()-.3)*3,vy:-1-Math.random()*3,l:1,c:['#fff3c4','#ffd27a','#ffcf6e'][Math.random()*3|0],dl:.008,s:1+Math.random()*2})
-    // wind streaks
-    g.strokeStyle=`rgba(255,236,190,${.12*gold})`;g.lineWidth=1.2;for(let i=0;i<10;i++){const y=(i*97+t*40)%h,x=((t*900+i*311)%(w*1.6))-w*.3;g.beginPath();g.moveTo(x,y);g.quadraticCurveTo(x+60,y-8,x+140,y+4);g.stroke()}}}
+  if(gold){const tp=tip(),R=Math.max(w,h)*(.35+gold*.5),gr=g.createRadialGradient(tp.x,tp.y,0,tp.x,tp.y,R);gr.addColorStop(0,`rgba(255,214,150,${.28*gold})`);gr.addColorStop(.4,`rgba(230,150,70,${.12*gold})`);gr.addColorStop(1,'rgba(200,120,50,0)');g.fillStyle=gr;g.fillRect(0,0,w,h);
+   if(!RMm){const ge=n-glowT;if(ge<2800&&Math.random()<.3*FEW)papers.push({x:-30,y:h*(.1+Math.random()*.7),vx:5+Math.random()*6,vy:(Math.random()-.6)*1.6,r:Math.random()*6,vr:(Math.random()-.5)*.25,s:12+Math.random()*12,f:Math.random()*6});
+    if(Math.random()<.15*FEW)P.push({x:Math.random()*w,y:h*(.2+Math.random()*.6),vx:2+Math.random()*3,vy:-.3,l:1,c:['#e9d6ae','#cdb48a'][Math.random()*2|0],dl:.01,s:.8+Math.random()*1.2})}}
+  for(let i=papers.length-1;i>=0;i--){const q=papers[i];q.x+=q.vx;q.y+=q.vy+Math.sin(t*3+q.f)*.9;q.vx*=.995;q.r+=q.vr;if(q.x>w+40){papers.splice(i,1);continue}
+   g.save();g.translate(q.x,q.y);g.rotate(q.r);g.scale(1,Math.cos(t*6+q.f)*.8+.2);g.fillStyle='#efe2c4';g.fillRect(-q.s/2,-q.s*.65,q.s,q.s*1.3);g.strokeStyle='rgba(110,80,40,.5)';g.lineWidth=.8;for(let k=0;k<3;k++){g.beginPath();g.moveTo(-q.s*.35,-q.s*.35+k*q.s*.3);g.lineTo(q.s*.35,-q.s*.35+k*q.s*.3);g.stroke()}g.restore()}
   // guide
   if(phase==='draw'||phase==='say'||phase==='show'){const G=guide(),a=phase==='show'?Math.min(1,(n-stepT)/600):phase==='say'?.35:1,c=sp().col[1];
    g.globalAlpha=a;for(let i=0;i<G.length;i+=3){const q=G[i],pl=.5+.5*Math.sin(t*5-i*.25);g.fillStyle=c;g.globalAlpha=a*(.25+.5*pl);g.beginPath();g.arc(q.x,q.y,2.2+1.6*pl,0,6.28);g.fill()}
@@ -1591,8 +1637,18 @@ function wandScene(core){return new Promise(async done=>{
  raf=requestAnimationFrame(frame);
  /* go */
  phase='intro';
- ui('#wgo').onclick=async()=>{if(phase!=='intro')return;phase='enter';tick();d.classList.remove('intro');if(SRc&&VOICE_OK!==false)startVoice();else micLost();shelf();line('w_in')};
- W.__wnd={phase:()=>phase,tries:()=>tries,K:()=>K,right:()=>right,cur:()=>curW,micOff:()=>micOff,guide:()=>JSON.stringify(phase==='draw'?guide():null),spells:()=>spells.slice(),si:()=>si,toSay:()=>phase==='draw'&&toSay(),cap:()=>cap.textContent,skipLines:()=>{tok++;try{src&&src.stop()}catch(e){}}};
+ ui('#wgo').onclick=async()=>{if(phase!=='intro')return;phase='enter';tick();d.classList.remove('intro');if(SRc&&VOICE_OK!==false)startVoice();else micLost();
+  await interview();if(ended||phase!=='ask')return;trio=pickTrio();shelf();line('w_in')};
+ let pref={},trio=null,sugQ=[];
+ async function interview(){phase='ask';const iv=ui('#wiv'),qe=ui('#wivq'),ae=ui('#wiva');qe.textContent=WCAP.k_hi;ae.innerHTML='';iv.classList.add('on');line('k_hi');await sleep(W.__fastWand?50:RMm?600:1800);
+  for(let i=0;i<KQ.length;i++){if(ended||phase!=='ask')return;const Q=KQ[i];qe.textContent=Q.q;ae.innerHTML='';iv.classList.remove('qin');void iv.offsetWidth;iv.classList.add('qin');
+   const c=await new Promise(res=>Q.a.forEach(([t,k],j)=>{const b=document.createElement('button');b.className='btn wia';b.style.setProperty('--d',(j*.08)+'s');b.textContent=t;b.onclick=()=>{tick();vib(8);b.classList.add('sel');ae.querySelectorAll('button').forEach(x=>x.disabled=true);res(k)};ae.appendChild(b)}));
+   pref[c]=(pref[c]||0)+1;await sleep(RMm?150:520)}
+  if(phase!=='ask')return;iv.classList.remove('on');line('k_hm');await sleep(RMm?150:700)}
+ function pickTrio(){const fav=Object.keys(pref).sort((a,b)=>pref[b]-pref[a])[0];const oth=shuf([0,1,2,3,4,5,6,7].filter(i=>i!==core));
+  const a=oth.filter(i=>WANDS[i].core===fav),b=oth.filter(i=>WANDS[i].core!==fav);const dec=(a.length?[a[0]]:[]).concat(b).slice(0,2);sugQ=dec.slice();
+  const t=dec.slice();t.splice(Math.floor(Math.random()*3),0,core);return t}
+ W.__wnd={phase:()=>phase,tries:()=>tries,K:()=>K,right:()=>right,cur:()=>curW,micOff:()=>micOff,guide:()=>JSON.stringify(phase==='draw'?guide():null),zone:()=>JSON.stringify(ZN),ask:()=>phase==='ask',spells:()=>spells.slice(),si:()=>si,toSay:()=>phase==='draw'&&toSay(),cap:()=>cap.textContent,skipLines:()=>{tok++;try{src&&src.stop()}catch(e){}}};
 })}
 
 /* ---------- voice check before the wand shop ---------- */
